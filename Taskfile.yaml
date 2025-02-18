@@ -1,0 +1,52 @@
+version: "3"
+
+vars:
+  MODNAME:
+    sh: go list -m
+  APPNAME: "{{.MODNAME | base}}"
+  VERSION:
+    sh: git describe --tags --always
+  DATE:
+    sh: date "+%F"
+  LDFLAGS: >-
+    -w
+    -s
+    -X main.Version={{.VERSION}}
+    -X main.DateBuilt={{.DATE}}
+  GOFLAGS: >-
+    -trimpath
+  DOCKER_IMAGE: "{{.MODNAME}}"
+  DOCKER_TAG: "{{.VERSION}}"
+
+tasks:
+  go:update:
+    cmds:
+      - go get -u ./...
+
+  go:tidy:
+    cmds:
+      - go mod tidy
+
+  go:lint:
+    sources:
+      - "**/*.go"
+    cmds:
+      - golangci-lint run
+
+  go:fmt:
+    sources:
+      - "**/*.go"
+    cmds:
+      - gofumpt -w -l .
+
+  go:build:
+    sources:
+      - "**/*.go"
+    deps:
+      - go:tidy
+    cmds:
+      - go build {{.GOFLAGS}} -ldflags "{{.LDFLAGS}}" ./cmd/redpanda-connect/
+
+  docker:build:
+    cmds:
+      - docker build --tag {{.DOCKER_IMAGE}}:{{.DOCKER_TAG}} --tag {{.DOCKER_IMAGE}}:latest .

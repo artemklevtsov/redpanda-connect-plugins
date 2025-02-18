@@ -1,0 +1,5 @@
+.task
+.devbox
+redpanda-connect
+# Added by goreleaser init:
+dist/

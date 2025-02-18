@@ -1,0 +1,30 @@
+run:
+  timeout: 5m
+  allow-parallel-runners: true
+linters:
+  enable:
+    - asciicheck
+    - bodyclose
+    - misspell
+    - wsl
+    - errname
+    - errorlint
+    - copyloopvar
+    - gosec
+    - nilnil
+    - nilerr
+    - bidichk
+    - contextcheck
+    - gofumpt
+    - goimports
+    - noctx
+    - nolintlint
+    - prealloc
+    - reassign
+    - unconvert
+    - unparam
+    - usestdlibvars
+    - wastedassign
+    - forcetypeassert
+    - musttag
+    - loggercheck
