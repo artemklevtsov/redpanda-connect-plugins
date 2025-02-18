@@ -1,4 +1,6 @@
-# Redpanda Connect Plugin For Yandex.Metrika API
+# Redpanda Connect for Yandex.Metrika API
+
+Redpanda connect plugins to fetch data from the Yandex.Metrika API.
 
 ## Build
 
