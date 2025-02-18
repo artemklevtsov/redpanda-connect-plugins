@@ -1,5 +1,5 @@
 .task
 .devbox
-redpanda-connect
+redpanda-connect-yandex-metrika
 # Added by goreleaser init:
 dist/
