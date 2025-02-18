@@ -21,7 +21,7 @@ FROM alpine:latest AS package
 
 LABEL maintainer="Artem Klevtsov <a.klevtsov@gmail.com>"
 
-COPY --from=build /app/redpanda-connect /usr/bin/redpanda-connect
+COPY --from=build /app/redpanda-connect-yandex-metrika /usr/bin/redpanda-connect-yandex-metrika
 
 WORKDIR /app
 
@@ -32,6 +32,6 @@ USER appuser
 
 EXPOSE 4195
 
-ENTRYPOINT ["/usr/bin/redpanda-connect"]
+ENTRYPOINT ["/usr/bin/redpanda-connect-yandex-metrika"]
 
 CMD ["run"]

@@ -6,6 +6,8 @@ vars:
   APPNAME: "{{.MODNAME | base}}"
   VERSION:
     sh: git describe --tags --always
+  REVISION:
+    sh: git rev-parse --short HEAD
   DATE:
     sh: date "+%F"
   LDFLAGS: >-
@@ -45,7 +47,7 @@ tasks:
     deps:
       - go:tidy
     cmds:
-      - go build {{.GOFLAGS}} -ldflags "{{.LDFLAGS}}" ./cmd/redpanda-connect/
+      - go build {{.GOFLAGS}} -ldflags "{{.LDFLAGS}}" -o {{.APPNAME}}
 
   docker:build:
     cmds:
