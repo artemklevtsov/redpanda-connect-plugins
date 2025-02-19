@@ -5,10 +5,12 @@ import (
 
 	"github.com/redpanda-data/benthos/v4/public/service"
 
-	_ "github.com/redpanda-data/connect/v4/public/components/io"
-	_ "github.com/redpanda-data/connect/v4/public/components/pure"
-	_ "github.com/redpanda-data/connect/v4/public/components/pure/extended"
-	_ "github.com/redpanda-data/connect/v4/public/components/sql"
+	_ "github.com/redpanda-data/connect/public/bundle/free/v4"
+
+	// _ "github.com/redpanda-data/connect/v4/public/components/io"
+	// _ "github.com/redpanda-data/connect/v4/public/components/pure"
+	// _ "github.com/redpanda-data/connect/v4/public/components/pure/extended"
+	// _ "github.com/redpanda-data/connect/v4/public/components/sql"
 
 	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/input/yandex_metrika_goals"
 	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/input/yandex_metrika_stat_table"
