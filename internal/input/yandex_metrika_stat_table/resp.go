@@ -1,33 +1,30 @@
 package stat_table
 
-import (
-	"fmt"
-	"log/slog"
-)
+import "github.com/redpanda-data/benthos/v4/public/service"
 
 type apiResponse struct {
-	Query     *query             `json:"query"`
+	Query     *apiQuery          `json:"query"`
 	Data      []apiResponseEntry `json:"data"`
 	TotalRows int                `json:"total_rows"`
 }
 
 type apiResponseEntry struct {
-	Dimenctions []struct {
+	Dimensions []struct {
 		Name string `json:"name"`
 		Id   string `json:"id,omitempty"`
 	} `json:"dimensions"`
 	Metrics []float64 `json:"metrics"`
 }
 
-func (r *apiResponse) Rows(formayKeys bool) []map[string]any {
-	data := make([]map[string]any, 0, len(r.Data))
+func (r *apiResponse) Batch(formatKeys bool) service.MessageBatch {
+	msgs := make(service.MessageBatch, len(r.Data))
 
-	for _, e := range r.Data {
+	for i, e := range r.Data {
 		row := make(map[string]any)
 
-		for di, d := range e.Dimenctions {
+		for di, d := range e.Dimensions {
 			k := r.Query.Dimensions[di]
-			if formayKeys {
+			if formatKeys {
 				k = formatKey(k)
 			}
 
@@ -36,39 +33,20 @@ func (r *apiResponse) Rows(formayKeys bool) []map[string]any {
 
 		for mi, m := range e.Metrics {
 			k := r.Query.Metrics[mi]
-			if formayKeys {
+			if formatKeys {
 				k = formatKey(k)
 			}
 
 			row[k] = m
 		}
 
-		data = append(data, row)
+		msg := service.NewMessage(nil)
+		msg.SetStructuredMut(row)
+		msg.MetaSetMut("query", r.Query)
+		msg.MetaSetMut("total_rows", r.TotalRows)
+
+		msgs[i] = msg
 	}
 
-	return data
-}
-
-// APIError API error object
-// Source: https://yandex.ru/dev/metrika/doc/api2/management/concept/errors.html#errors__resp
-type apiError struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Reasons []struct {
-		ErrorType string `json:"error_type"`
-		Message   string `json:"message"`
-		Location  string `json:"location"`
-	} `json:"errors"`
-}
-
-// API error string representation.
-func (e apiError) Error() string {
-	return fmt.Sprintf("Yandex.Metriika API error %d: %s", e.Code, e.Message)
-}
-
-func (e *apiError) LogValue() slog.Value {
-	return slog.GroupValue(
-		slog.Int("code", e.Code),
-		slog.String("message", e.Message),
-	)
+	return msgs
 }

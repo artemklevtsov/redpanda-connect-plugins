@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-type query struct {
+type apiQuery struct {
 	IDs          []int    `json:"ids"`
 	Date1        string   `json:"date1,omitempty"`
 	Date2        string   `json:"date2,omitempty"`
@@ -20,7 +20,7 @@ type query struct {
 	DirectLogins []string `json:"direct_client_logins"`
 }
 
-func (q *query) Map() map[string]string {
+func (q *apiQuery) Params() map[string]string {
 	m := make(map[string]string)
 	m["ids"] = strings.Trim(strings.Join(strings.Fields(fmt.Sprint(q.IDs)), ","), "[]")
 	m["filters"] = q.Filters

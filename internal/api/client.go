@@ -1,7 +1,8 @@
-package stat_table
+package api
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -10,19 +11,15 @@ import (
 )
 
 const (
-	apiBaseURL  = "https://api-metrika.yandex.com"
-	apiKind     = "stat"
-	apiVersion  = "v1"
-	apiEndpoint = "data"
-	pageLimit   = 1000
+	APIBaseURL = "https://api-metrika.yandex.com"
 )
 
-func newHttpClient(token string, logger *service.Logger) *req.Client {
-	baseURL := fmt.Sprintf("%s/%s/%s", apiBaseURL, apiKind, apiVersion)
+func NewClient(kind, version, token string, logger *service.Logger) *req.Client {
+	baseURL := fmt.Sprintf("%s/%s/%s", APIBaseURL, kind, version)
 
 	httpClient := req.C().
 		SetBaseURL(baseURL).
-		SetCommonErrorResult(&apiError{}).
+		SetCommonErrorResult(&APIError{}).
 		SetCommonRetryCount(3).
 		SetCommonRetryBackoffInterval(1*time.Second, 5*time.Second).
 		SetCommonRetryCondition(func(resp *req.Response, err error) bool {
@@ -38,7 +35,7 @@ func newHttpClient(token string, logger *service.Logger) *req.Client {
 			}
 		}).
 		OnAfterResponse(func(client *req.Client, resp *req.Response) error {
-			if err, ok := resp.ErrorResult().(*apiError); ok {
+			if err, ok := resp.ErrorResult().(*APIError); ok {
 				logger.
 					With("error", err.Message, "code", err.Code).
 					Error("Yandex.Metrika API error")
@@ -55,4 +52,28 @@ func newHttpClient(token string, logger *service.Logger) *req.Client {
 	}
 
 	return httpClient
+}
+
+// APIError API error object
+// Source: https://yandex.ru/dev/metrika/doc/api2/management/concept/errors.html#errors__resp
+type APIError struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	Reasons []struct {
+		ErrorType string `json:"error_type"`
+		Message   string `json:"message"`
+		Location  string `json:"location"`
+	} `json:"errors"`
+}
+
+// API error string representation.
+func (e APIError) Error() string {
+	return fmt.Sprintf("Yandex.Metriika API error %d: %s", e.Code, e.Message)
+}
+
+func (e *APIError) LogValue() slog.Value {
+	return slog.GroupValue(
+		slog.Int("code", e.Code),
+		slog.String("message", e.Message),
+	)
 }

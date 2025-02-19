@@ -6,8 +6,15 @@ import (
 	"sync"
 
 	"github.com/Jeffail/shutdown"
+	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/api"
 	"github.com/imroc/req/v3"
 	"github.com/redpanda-data/benthos/v4/public/service"
+)
+
+const (
+	apiKind    = "stat"
+	apiVersion = "v1"
+	pageLimit  = 1000
 )
 
 func init() {
@@ -26,7 +33,7 @@ type benthosInput struct {
 	fetched    int
 	total      int
 	formatKeys bool
-	query      *query
+	query      *apiQuery
 	client     *req.Client
 	logger     *service.Logger
 	shutSig    *shutdown.Signaller
@@ -41,7 +48,14 @@ func (input *benthosInput) Connect(ctx context.Context) error {
 		return nil
 	}
 
-	input.client = newHttpClient(input.token, input.logger)
+	httpClient := api.NewClient(
+		apiKind,
+		apiVersion,
+		input.token,
+		input.logger,
+	)
+
+	input.client = httpClient
 
 	return nil
 }
@@ -60,11 +74,11 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 	resp, err := input.client.R().
 		SetContext(ctx).
-		SetQueryParams(input.query.Map()).
+		SetQueryParams(input.query.Params()).
 		SetQueryParam("offset", strconv.Itoa(input.fetched+1)).
 		// SetErrorResult(&errResp).
 		SetSuccessResult(&data).
-		Get(apiEndpoint)
+		Get("data")
 	if err != nil {
 		return nil, nil, err
 	}
@@ -83,15 +97,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 	input.fetched += len(data.Data)
 
-	msgs := make(service.MessageBatch, 0, len(data.Data))
-
-	for _, row := range data.Rows(input.formatKeys) {
-		msg := service.NewMessage(nil)
-		msg.SetStructuredMut(row)
-		msg.MetaSetMut("total_rows", data.TotalRows)
-		msg.MetaSetMut("timezone", data.Query.Timezone)
-		msgs = append(msgs, msg)
-	}
+	msgs := data.Batch(input.formatKeys)
 
 	ack := func(context.Context, error) error { return nil }
 

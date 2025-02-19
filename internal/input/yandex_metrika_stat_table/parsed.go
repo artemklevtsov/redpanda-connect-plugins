@@ -9,7 +9,7 @@ func inputFromParsed(conf *service.ParsedConfig, mgr *service.Resources) (servic
 	input := &benthosInput{
 		logger:  mgr.Logger(),
 		shutSig: shutdown.NewSignaller(),
-		query:   &query{},
+		query:   &apiQuery{},
 	}
 
 	var err error

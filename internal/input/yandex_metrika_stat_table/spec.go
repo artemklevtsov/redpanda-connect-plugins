@@ -6,10 +6,10 @@ func inputSpec() *service.ConfigSpec {
 	return service.NewConfigSpec().
 		Beta().
 		Categories("api", "http", "yandex").
-		Summary("Creates an input that fetch Yandex.Metrika API report.").
+		Summary("Creates an input that fetch Yandex.Metrika API report data.").
 		Fields(
 			service.NewIntListField("ids").
-				Description("Yandex.Metrika Counter ID").
+				Description("Yandex.Metrika Counter IDs").
 				Example([]int{44147844, 2215573}),
 			service.NewStringListField("metrics").
 				Description("A list of metrics.").
