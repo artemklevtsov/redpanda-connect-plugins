@@ -1,0 +1,9 @@
+logger:
+  level: debug
+
+input:
+  yandex_metrika_goals:
+    counter_id: 44147844
+
+output:
+  stdout: {}
