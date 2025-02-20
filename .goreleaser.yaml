@@ -18,22 +18,23 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
-    targets:
-      - windows_amd64
-      - windows_arm64
-      - linux_amd64
-      - linux_arm64
-      - linux_arm
-      - linux_386
-      - darwin_amd64
-      - darwin_arm64
+    goos:
+      - darwin
+      - linux
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: "386"
     flags:
       - -trimpath
     ldflags:
       - -s
       - -w
-      - -X main.Version={{.Version}}
-      - -X main.DateBuilt={{.Date}}
+      - -X main.Version={{ .Version }}
+      - -X main.DateBuilt={{ .Date }}
 
 archives:
   - formats:
@@ -41,7 +42,7 @@ archives:
     # this name template makes the OS and Arch compatible with the results of `uname`.
     name_template: >-
       {{ .ProjectName }}_
-      {{- title .Os }}_
+      {{- .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
@@ -52,6 +53,12 @@ archives:
         formats:
           - zip
 
+checksum:
+  name_template: "checksums.txt"
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-snapshot"
+
 changelog:
   sort: asc
   filters:
@@ -59,9 +66,57 @@ changelog:
       - "^docs:"
       - "^test:"
 
-release:
-  footer: >-
+nfpms:
+  - license: Apache-2.0
+    maintainer: Artem Klevtsov <a.a.klevtsov@gmail.com>
+    homepage: https://github.com/artemklevtsov/redpanda-connect-yandex-metrika
+    description: Redpanda Connect is a declarative data streaming service
+    section: utils
+    formats:
+      - apk
+      - rpm
+      - deb
+      - archlinux
+    provides:
+      - benthos
+      - redpanda-connect
+    file_name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+      {{- if .Arm }}v{{ .Arm }}{{ end }}
 
-    ---
+dockers:
+  - image_templates:
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-arm64"
+    goarch: arm64
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=maintainer=Artem Klevtsov <a.a.klevtsov@gmail.com>"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--platform=linux/arm64"
+  - image_templates:
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-amd64"
+    goarch: amd64
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--label=maintainer=Artem Klevtsov <a.a.klevtsov@gmail.com>"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--platform=linux/amd64"
 
-    Released by [GoReleaser](https://github.com/goreleaser/goreleaser).
+docker_manifests:
+  - name_template: "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}"
+    image_templates:
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-arm64"
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-amd64"
