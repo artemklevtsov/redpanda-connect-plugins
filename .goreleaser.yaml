@@ -97,10 +97,10 @@ dockers:
     build_flag_templates:
       - "--pull"
       - "--label=maintainer=Artem Klevtsov <a.a.klevtsov@gmail.com>"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
       - "--platform=linux/arm64"
   - image_templates:
       - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-amd64"
@@ -109,10 +109,10 @@ dockers:
     build_flag_templates:
       - "--pull"
       - "--label=maintainer=Artem Klevtsov <a.a.klevtsov@gmail.com>"
-      - "--label=org.opencontainers.image.created={{.Date}}"
-      - "--label=org.opencontainers.image.title={{.ProjectName}}"
-      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
-      - "--label=org.opencontainers.image.version={{.Version}}"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
+      - "--label=org.opencontainers.image.title={{ .ProjectName }}"
+      - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
+      - "--label=org.opencontainers.image.version={{ .Version }}"
       - "--platform=linux/amd64"
 
 docker_manifests:
@@ -120,3 +120,10 @@ docker_manifests:
     image_templates:
       - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-arm64"
       - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-amd64"
+  - name_template: "ghcr.io/artemklevtsov/{{ .ProjectName }}:latest"
+    image_templates:
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-arm64"
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-amd64"
+
+release:
+  footer: >-
