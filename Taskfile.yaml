@@ -33,7 +33,7 @@ tasks:
     sources:
       - "**/*.go"
     cmds:
-      - golangci-lint run
+      - golangci-lint run --verbose
 
   go:fmt:
     sources:
@@ -48,6 +48,10 @@ tasks:
       - go:tidy
     cmds:
       - go build {{.GOFLAGS}} -ldflags "{{.LDFLAGS}}" -o {{.APPNAME}}
+
+  go:release:
+    cmds:
+      - goreleaser release --snapshot --clean
 
   docker:build:
     cmds:
