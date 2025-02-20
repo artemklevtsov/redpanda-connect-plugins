@@ -8,8 +8,12 @@
     "glibcLocales@latest",
     "go-task@latest"
   ],
+  "env": {
+    "GOPATH": "$HOME/go/",
+    "PATH": "$PATH:$HOME/go/bin"
+  },
   "shell": {
-    "init_hook": ["echo 'Welcome to devbox!' > /dev/null"],
+    "init_hook": ["export \"GOROOT=$(go env GOROOT)\""],
     "scripts": {
       "test": ["echo \"Error: no test specified\" && exit 1"]
     }
