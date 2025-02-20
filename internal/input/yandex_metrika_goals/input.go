@@ -86,13 +86,16 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 	input.done = true
 
-	msgs := data.Batch()
+	msgs, err := data.Batch()
+	if err != nil {
+		return nil, nil, err
+	}
 
 	ack := func(context.Context, error) error { return nil }
 
 	return msgs, ack, nil
 }
 
-func (y *benthosInput) Close(ctx context.Context) error {
+func (input *benthosInput) Close(ctx context.Context) error {
 	return nil
 }

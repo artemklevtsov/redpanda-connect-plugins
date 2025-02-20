@@ -1,6 +1,10 @@
 package goals
 
-import "github.com/redpanda-data/benthos/v4/public/service"
+import (
+	"encoding/json"
+
+	"github.com/redpanda-data/benthos/v4/public/service"
+)
 
 type apiResponse struct {
 	Data []apiResponseEntry `json:"goals"`
@@ -20,15 +24,22 @@ type apiResponseEntry struct {
 	Conditions []map[string]string `json:"conditions,omitempty"`
 }
 
-func (r *apiResponse) Batch() service.MessageBatch {
+func (r *apiResponse) Batch() (service.MessageBatch, error) {
 	msgs := make(service.MessageBatch, len(r.Data))
 
 	for i, row := range r.Data {
 		msg := service.NewMessage(nil)
-		msg.SetStructuredMut(row)
+
+		b, err := json.Marshal(row)
+		if err != nil {
+			return nil, err
+		}
+
+		// can't set struct (only slice or map)
+		msg.SetBytes(b)
 
 		msgs[i] = msg
 	}
 
-	return msgs
+	return msgs, nil
 }

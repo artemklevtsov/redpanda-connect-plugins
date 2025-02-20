@@ -1,4 +1,4 @@
-package stat_table
+package misc
 
 import (
 	"regexp"
@@ -6,7 +6,7 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
-func formatKey(k string) string {
+func FormatKey(k string) string {
 	k = regexp.MustCompile("^ym:.*:").
 		ReplaceAllString(k, "")
 

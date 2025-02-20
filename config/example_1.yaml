@@ -20,5 +20,11 @@ input:
     # filters: ym:s:date=='2025-02-03'
     format_keys: true
 
+pipeline:
+  processors:
+    - mutation: |
+        #!blobl
+        root.fetched_at = now()
+
 output:
   stdout: {}

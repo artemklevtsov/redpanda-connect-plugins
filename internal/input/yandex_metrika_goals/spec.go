@@ -10,7 +10,7 @@ func inputSpec() *service.ConfigSpec {
 		Fields(
 			service.NewIntField("counter_id").
 				Description("Yandex.Metrika Counter ID").
-				Example([]int{44147844, 2215573}),
+				Example(44147844),
 			service.NewStringField("token").
 				Description("Yandex.Metrika API token").
 				Secret().

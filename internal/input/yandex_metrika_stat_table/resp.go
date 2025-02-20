@@ -1,6 +1,9 @@
 package stat_table
 
-import "github.com/redpanda-data/benthos/v4/public/service"
+import (
+	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/misc"
+	"github.com/redpanda-data/benthos/v4/public/service"
+)
 
 type apiResponse struct {
 	Query     *apiQuery          `json:"query"`
@@ -16,7 +19,7 @@ type apiResponseEntry struct {
 	Metrics []float64 `json:"metrics"`
 }
 
-func (r *apiResponse) Batch(formatKeys bool) service.MessageBatch {
+func (r *apiResponse) Batch(formatKeys bool) (service.MessageBatch, error) {
 	msgs := make(service.MessageBatch, len(r.Data))
 
 	for i, e := range r.Data {
@@ -25,7 +28,7 @@ func (r *apiResponse) Batch(formatKeys bool) service.MessageBatch {
 		for di, d := range e.Dimensions {
 			k := r.Query.Dimensions[di]
 			if formatKeys {
-				k = formatKey(k)
+				k = misc.FormatKey(k)
 			}
 
 			row[k] = d.Name
@@ -34,7 +37,7 @@ func (r *apiResponse) Batch(formatKeys bool) service.MessageBatch {
 		for mi, m := range e.Metrics {
 			k := r.Query.Metrics[mi]
 			if formatKeys {
-				k = formatKey(k)
+				k = misc.FormatKey(k)
 			}
 
 			row[k] = m
@@ -48,5 +51,5 @@ func (r *apiResponse) Batch(formatKeys bool) service.MessageBatch {
 		msgs[i] = msg
 	}
 
-	return msgs
+	return msgs, nil
 }

@@ -5,5 +5,11 @@ input:
   yandex_metrika_goals:
     counter_id: 44147844
 
+pipeline:
+  processors:
+    - mutation: |
+        #!blobl
+        root.fetched_at = now()
+
 output:
   stdout: {}
