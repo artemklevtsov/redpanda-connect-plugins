@@ -13,6 +13,7 @@ import (
 	// _ "github.com/redpanda-data/connect/v4/public/components/sql"
 
 	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/input/yandex_metrika_goals"
+	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/input/yandex_metrika_logs"
 	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/input/yandex_metrika_stat_table"
 )
 

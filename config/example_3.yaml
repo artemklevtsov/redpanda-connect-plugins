@@ -1,0 +1,25 @@
+logger:
+  level: debug
+
+input:
+  yandex_metrika_logs:
+    token: ${YANDEX_METRIKA_TOKEN}
+    counter_id: 44147844
+    source: visits
+    fields:
+      - ym:s:dateTime
+      - ym:s:visitID
+      - ym:s:isNewUser
+      - ym:s:pageViews
+    date1: 2025-01-01
+    date2: 2025-01-01
+    format_keys: true
+
+pipeline:
+  processors:
+    - mutation: |
+        #!blobl
+        root.fetched_at = now()
+
+output:
+  stdout: {}
