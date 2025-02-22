@@ -4,18 +4,16 @@ Redpanda connect plugins to fetch data from the Yandex.Metrika API.
 
 ## Build
 
-Finally, build your custom main func:
+Build and install binary:
 
 ```sh
 go install github.com/artemklevtsov/redpanda-connect-yandex-metrika@latest
 ```
 
-Alternatively build it as a Docker image with:
+Alternatively pull a Docker image with:
 
 ```sh
-git clone https://github.com/artemklevtsov/redpanda-connect-yandex-metrika
-cd redpanda-connect-yandex-metrika
-docker build -t redpanda-connect-yandex-metrika .
+docker pull ghcr.io/artemklevtsov/redpanda-connect-yandex-metrika@latest
 ```
 
 ## Run
@@ -49,3 +47,5 @@ And you can run it like this:
 ```sh
 redpanda-connect-yandex-metrika run ./connect.yaml
 ```
+
+See also `configs/` for the more examples.
