@@ -8,6 +8,8 @@
 
 version: 2
 
+project_name: redpanda-connect-yandex-metrika
+
 before:
   hooks:
     # You may remove this if you don't use go modules.
@@ -16,7 +18,9 @@ before:
     - go generate ./...
 
 builds:
-  - env:
+  - main: ./cmd/redpanda-connect
+    binary: "{{ .ProjectName }}"
+    env:
       - CGO_ENABLED=0
     goos:
       - darwin
@@ -126,4 +130,10 @@ docker_manifests:
       - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-amd64"
 
 release:
-  footer: >-
+  footer: |
+    ## Docker images
+
+    To pull the image, you can execute the following command:
+    ```
+    docker pull ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}
+    ```

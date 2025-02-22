@@ -1,4 +1,4 @@
-package goals
+package stat_table
 
 import (
 	"context"
@@ -6,20 +6,20 @@ import (
 	"sync"
 
 	"github.com/Jeffail/shutdown"
-	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/api"
+	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/api"
 	"github.com/imroc/req/v3"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 
 const (
-	apiKind     = "management"
-	apiVersion  = "v1"
-	apiEndpoint = "counter"
+	apiKind    = "stat"
+	apiVersion = "v1"
+	pageLimit  = 1000
 )
 
 func init() {
 	err := service.RegisterBatchInput(
-		"yandex_metrika_goals", inputSpec(),
+		"yandex_metrika_stat_table", inputSpec(),
 		func(conf *service.ParsedConfig, mgr *service.Resources) (service.BatchInput, error) {
 			return inputFromParsed(conf, mgr)
 		})
@@ -29,13 +29,15 @@ func init() {
 }
 
 type benthosInput struct {
-	token     string
-	counter   int
-	done      bool
-	client    *req.Client
-	logger    *service.Logger
-	shutSig   *shutdown.Signaller
-	clientMut sync.Mutex
+	token      string
+	fetched    int
+	total      int
+	formatKeys bool
+	query      *apiQuery
+	client     *req.Client
+	logger     *service.Logger
+	shutSig    *shutdown.Signaller
+	clientMut  sync.Mutex
 }
 
 func (input *benthosInput) Connect(ctx context.Context) error {
@@ -62,7 +64,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 	input.clientMut.Lock()
 	defer input.clientMut.Unlock()
 
-	if input.done {
+	if input.total > 0 && input.fetched >= input.total {
 		return nil, nil, service.ErrEndOfInput
 	}
 
@@ -72,10 +74,11 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 	resp, err := input.client.R().
 		SetContext(ctx).
+		SetQueryParams(input.query.Params()).
+		SetQueryParam("offset", strconv.Itoa(input.fetched+1)).
 		// SetErrorResult(&errResp).
 		SetSuccessResult(&data).
-		SetPathParam("counter_id", strconv.Itoa(input.counter)).
-		Get("counter/{counter_id}/goals")
+		Get("data")
 	if err != nil {
 		return nil, nil, err
 	}
@@ -84,9 +87,17 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 		return nil, nil, service.ErrEndOfInput
 	}
 
-	input.done = true
+	if data.TotalRows == 0 {
+		return nil, nil, service.ErrEndOfInput
+	}
 
-	msgs, err := data.Batch()
+	if input.total == 0 {
+		input.total = data.TotalRows
+	}
+
+	input.fetched += len(data.Data)
+
+	msgs, err := data.Batch(input.formatKeys)
 	if err != nil {
 		return nil, nil, err
 	}

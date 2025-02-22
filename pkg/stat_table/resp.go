@@ -1,7 +1,7 @@
 package stat_table
 
 import (
-	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/misc"
+	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/misc"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 

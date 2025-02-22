@@ -47,7 +47,7 @@ tasks:
     deps:
       - go:tidy
     cmds:
-      - go build {{.GOFLAGS}} -ldflags "{{.LDFLAGS}}" -o {{.APPNAME}}
+      - go build {{.GOFLAGS}} -ldflags "{{.LDFLAGS}}" -o {{.APPNAME}} ./cmd/redpanda-connect
 
   go:release:
     cmds:

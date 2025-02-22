@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/Jeffail/shutdown"
-	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/api"
-	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/internal/misc"
+	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/api"
+	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/misc"
 	"github.com/imroc/req/v3"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
