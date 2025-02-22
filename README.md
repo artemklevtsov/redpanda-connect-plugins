@@ -10,6 +10,12 @@ Build and install binary:
 go install github.com/artemklevtsov/redpanda-connect-yandex-metrika@latest
 ```
 
+Or download binary with:
+
+```sh
+curl -s https://i.jpillora.com/artemklevtsov/redpanda-connect-yandex-metrika@latest! | bash
+```
+
 Alternatively pull a Docker image with:
 
 ```sh
