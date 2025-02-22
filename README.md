@@ -58,7 +58,16 @@ See also `configs/` for the more examples.
 
 ## See also
 
+### Authorization
+
+- [debug token](https://yandex.ru/dev/id/doc/en/tokens/debug-token)
+
+### Reporting API
+
+- [dimensions and metrics](https://yandex.ru/dev/metrika/en/stat/attrandmetr/dim_all)
+
+### Logs API
+
 - [hits](https://yandex.ru/dev/metrika/en/logs/fields/hits)
 - [visits](https://yandex.ru/dev/metrika/en/logs/fields/visits)
 - [parametrization](https://yandex.ru/dev/metrika/en/logs/param)
-- [debug token](https://yandex.ru/dev/id/doc/en/tokens/debug-token)
