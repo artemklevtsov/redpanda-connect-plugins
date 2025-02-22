@@ -55,3 +55,10 @@ redpanda-connect-yandex-metrika run ./connect.yaml
 ```
 
 See also `configs/` for the more examples.
+
+## See also
+
+- [hits](https://yandex.ru/dev/metrika/en/logs/fields/hits)
+- [visits](https://yandex.ru/dev/metrika/en/logs/fields/visits)
+- [parametrization](https://yandex.ru/dev/metrika/en/logs/param)
+- [debug token](https://yandex.ru/dev/id/doc/en/tokens/debug-token)
