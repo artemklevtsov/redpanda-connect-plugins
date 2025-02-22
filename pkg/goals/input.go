@@ -72,7 +72,6 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 	resp, err := input.client.R().
 		SetContext(ctx).
-		// SetErrorResult(&errResp).
 		SetSuccessResult(&data).
 		SetPathParam("counter_id", strconv.Itoa(input.counter)).
 		Get("counter/{counter_id}/goals")

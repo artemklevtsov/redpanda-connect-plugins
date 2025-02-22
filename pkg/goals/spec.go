@@ -8,12 +8,12 @@ func inputSpec() *service.ConfigSpec {
 		Categories("api", "http", "yandex").
 		Summary("Creates an input that fetch Yandex.Metrika API goals.").
 		Fields(
-			service.NewIntField("counter_id").
-				Description("Yandex.Metrika Counter ID").
-				Example(44147844),
 			service.NewStringField("token").
 				Description("Yandex.Metrika API token").
 				Secret().
 				Optional(),
+			service.NewIntField("counter_id").
+				Description("Yandex.Metrika Counter ID").
+				Example(44147844),
 		)
 }

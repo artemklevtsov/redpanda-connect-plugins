@@ -8,6 +8,9 @@ func inputSpec() *service.ConfigSpec {
 		Categories("api", "http", "yandex").
 		Summary("Creates an input that fetch Yandex.Metrika API logs data.").
 		Fields(
+			service.NewStringField("token").
+				Description("Yandex.Metrika API token").
+				Secret(),
 			service.NewIntField("counter_id").
 				Description("Yandex.Metrika Counter ID").
 				Example(44147844),
@@ -17,9 +20,6 @@ func inputSpec() *service.ConfigSpec {
 			service.NewStringListField("fields").
 				Description("A list of fields.").
 				Example([]string{"ym:s:dateTime", "ym:s:visitID", "ym:s:pageViews", "ym:s:isNewUser", "ym:s:counterUserIDHash"}),
-			service.NewStringField("token").
-				Description("Yandex.Metrika API token").
-				Secret(),
 			service.NewStringField("date1").
 				Description("Start date of the sample period in YYYY-MM-DD format.").
 				Default("6daysAgo").

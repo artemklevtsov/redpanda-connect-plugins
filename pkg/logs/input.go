@@ -196,32 +196,6 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 			With("part", input.part).
 			Debug("fetch log request")
 
-			// pr, pw := io.Pipe()
-
-			// g := new(errgroup.Group)
-
-			// g.Go(func() error {
-			// 	defer pw.Close()
-
-			// 	resp, err := input.client.R().
-			// 		SetContext(ctx).
-			// 		SetPathParam("counter_id", strconv.Itoa(input.counter)).
-			// 		SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
-			// 		SetPathParam("part", strconv.Itoa(input.part)).
-			// 		SetQueryParams(input.query.Params()).
-			// 		SetOutput(pw).
-			// 		Get("counter/{counter_id}/logrequest/{request_id}/part/{part}/download")
-			// 	if err != nil {
-			// 		return err
-			// 	}
-
-			// 	if resp.IsErrorState() {
-			// 		return err
-			// 	}
-
-			// 	return nil
-			// })
-
 		resp, err := input.client.R().
 			SetContext(ctx).
 			SetPathParam("counter_id", strconv.Itoa(input.counter)).

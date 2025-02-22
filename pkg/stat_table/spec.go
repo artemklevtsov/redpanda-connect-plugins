@@ -8,21 +8,18 @@ func inputSpec() *service.ConfigSpec {
 		Categories("api", "http", "yandex").
 		Summary("Creates an input that fetch Yandex.Metrika API report data.").
 		Fields(
+			service.NewStringField("token").
+				Description("Yandex.Metrika API token").
+				Secret().
+				Optional(),
 			service.NewIntListField("ids").
 				Description("Yandex.Metrika Counter IDs").
 				Example([]int{44147844, 2215573}),
 			service.NewStringListField("metrics").
 				Description("A list of metrics.").
 				Example([]string{"ym:s:pageviews", "ym:s:visits", "ym:s:users"}),
-			service.NewStringField("token").
-				Description("Yandex.Metrika API token").
-				Secret().
-				Optional(),
 			service.NewStringListField("dimensions").
 				Description("A list of dimensions.").
-				Optional(),
-			service.NewStringField("filters").
-				Description("Segmentation filter.").
 				Optional(),
 			service.NewStringField("date1").
 				Description("Start date of the sample period in YYYY-MM-DD format.").
@@ -32,14 +29,17 @@ func inputSpec() *service.ConfigSpec {
 				Description("End date of the sample period in YYYY-MM-DD format.").
 				Default("today").
 				Optional(),
+			service.NewStringField("filters").
+				Description("Segmentation filter.").
+				Optional(),
+			service.NewStringListField("sort").
+				Description("A list of dimensions and metrics to use for sorting.").
+				Optional(),
 			service.NewStringField("lang").
 				Description("Language.").
 				Optional(),
 			service.NewStringField("preset").
 				Description("Report preset.").
-				Optional(),
-			service.NewStringListField("sort").
-				Description("A list of dimensions and metrics to use for sorting.").
 				Optional(),
 			service.NewStringField("timezone").
 				Description("Time zone in ±hh:mm format within the range of [-23:59; +23:59]").
