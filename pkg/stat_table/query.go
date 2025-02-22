@@ -13,6 +13,8 @@ type apiQuery struct {
 	Dimensions   []string `json:"dimensions,omitempty"`
 	Metrics      []string `json:"metrics"`
 	Sort         []string `json:"sort,omitempty"`
+	Limit        int      `json:"limit"`
+	Offset       int      `json:"offset"`
 	Filters      string   `json:"filters,omitempty"`
 	Lang         string   `json:"lang,omitempty"`
 	Preset       string   `json:"preset,omitempty"`
@@ -32,7 +34,8 @@ func (q *apiQuery) Params() map[string]string {
 	m["preset"] = q.Preset
 	m["sort"] = strings.Join(q.Sort, ",")
 	m["timezone"] = q.Timezone
-	m["limit"] = strconv.Itoa(pageLimit)
+	m["limit"] = strconv.Itoa(q.Limit)
+	m["offset"] = strconv.Itoa(q.Offset)
 
 	for k := range m {
 		if len(m[k]) == 0 {

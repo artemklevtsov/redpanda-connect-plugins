@@ -12,6 +12,9 @@ func inputFromParsed(conf *service.ParsedConfig, mgr *service.Resources) (servic
 		query:   &apiQuery{},
 	}
 
+	input.query.Offset = 0
+	input.query.Limit = pageLimit
+
 	var err error
 
 	input.query.IDs, err = conf.FieldIntList("ids")

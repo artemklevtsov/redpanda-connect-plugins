@@ -2,7 +2,6 @@ package stat_table
 
 import (
 	"context"
-	"strconv"
 	"sync"
 
 	"github.com/Jeffail/shutdown"
@@ -68,6 +67,8 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 		return nil, nil, service.ErrEndOfInput
 	}
 
+	input.query.Offset = input.fetched + 1
+
 	input.logger.Info("Fetch Yandex.Metrika API data")
 
 	var data apiResponse
@@ -75,8 +76,6 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 	resp, err := input.client.R().
 		SetContext(ctx).
 		SetQueryParams(input.query.Params()).
-		SetQueryParam("offset", strconv.Itoa(input.fetched+1)).
-		// SetErrorResult(&errResp).
 		SetSuccessResult(&data).
 		Get("data")
 	if err != nil {
