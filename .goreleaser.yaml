@@ -1,20 +1,10 @@
-# This is an example .goreleaser.yml file with some sensible defaults.
-# Make sure to check the documentation at https://goreleaser.com
-
-# The lines below are called `modelines`. See `:help modeline`
-# Feel free to remove those if you don't want/need to use them.
-# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
-# vim: set ts=2 sw=2 tw=0 fo=cnqoj
-
 version: 2
 
 project_name: redpanda-connect-yandex-metrika
 
 before:
   hooks:
-    # You may remove this if you don't use go modules.
     - go mod tidy
-    # you may remove this if you don't need go generate
     - go generate ./...
 
 builds:
@@ -40,18 +30,12 @@ builds:
       - -X main.Version={{ .Version }}
       - -X main.DateBuilt={{ .Date }}
 
+gomod:
+  proxy: true
+
 archives:
   - formats:
       - tar.gz
-    # this name template makes the OS and Arch compatible with the results of `uname`.
-    name_template: >-
-      {{ .ProjectName }}_
-      {{- .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
-    # use zip for windows archives
     format_overrides:
       - goos: windows
         formats:
@@ -69,6 +53,7 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+      - "^ci:"
 
 nfpms:
   - license: Apache-2.0
@@ -84,50 +69,46 @@ nfpms:
     provides:
       - benthos
       - redpanda-connect
-    file_name_template: >-
-      {{ .ProjectName }}_
-      {{- .Version }}_
-      {{- .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
-      {{- else if eq .Arch "386" }}i386
-      {{- else }}{{ .Arch }}{{ end }}
-      {{- if .Arm }}v{{ .Arm }}{{ end }}
 
 dockers:
   - image_templates:
-      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-arm64"
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Version }}-arm64"
     goarch: arm64
     use: buildx
     build_flag_templates:
       - "--pull"
       - "--label=maintainer=Artem Klevtsov <a.a.klevtsov@gmail.com>"
-      - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--label=org.opencontainers.image.title={{ .ProjectName }}"
       - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
       - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.url=https://github.com/artemklevtsov/redpanda-connect-yandex-metrika"
+      - "--label=org.opencontainers.image.source=https://github.com/artemklevtsov/redpanda-connect-yandex-metrika"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--platform=linux/arm64"
   - image_templates:
-      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-amd64"
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Version }}-amd64"
     goarch: amd64
     use: buildx
     build_flag_templates:
       - "--pull"
       - "--label=maintainer=Artem Klevtsov <a.a.klevtsov@gmail.com>"
-      - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--label=org.opencontainers.image.title={{ .ProjectName }}"
       - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
       - "--label=org.opencontainers.image.version={{ .Version }}"
+      - "--label=org.opencontainers.image.url=https://github.com/artemklevtsov/redpanda-connect-yandex-metrika"
+      - "--label=org.opencontainers.image.source=https://github.com/artemklevtsov/redpanda-connect-yandex-metrika"
+      - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--platform=linux/amd64"
 
 docker_manifests:
-  - name_template: "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}"
+  - name_template: "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Version }}"
     image_templates:
-      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-arm64"
-      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-amd64"
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Version }}-arm64"
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Version }}-amd64"
   - name_template: "ghcr.io/artemklevtsov/{{ .ProjectName }}:latest"
     image_templates:
-      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-arm64"
-      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}-amd64"
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Version }}-arm64"
+      - "ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Version }}-amd64"
 
 release:
   footer: |
@@ -135,5 +116,5 @@ release:
 
     To pull the image, you can execute the following command:
     ```
-    docker pull ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Tag }}
+    docker pull ghcr.io/artemklevtsov/{{ .ProjectName }}:{{ .Version }}
     ```
