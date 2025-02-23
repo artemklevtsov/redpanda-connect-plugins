@@ -41,6 +41,11 @@ archives:
         formats:
           - zip
 
+upx:
+  - enabled: true
+    compress: best
+    lzma: true
+
 checksum:
   name_template: "checksums.txt"
 
