@@ -5,10 +5,11 @@ import (
 )
 
 type apiQuery struct {
-	Source string   `json:"source"`
-	Date1  string   `json:"date1"`
-	Date2  string   `json:"date2"`
-	Fields []string `json:"fields"`
+	Source      string   `json:"source"`
+	Date1       string   `json:"date1"`
+	Date2       string   `json:"date2"`
+	Fields      []string `json:"fields"`
+	Attribution string   `json:"attribution"`
 }
 
 func (q *apiQuery) Params() map[string]string {
@@ -17,6 +18,7 @@ func (q *apiQuery) Params() map[string]string {
 	m["date1"] = q.Date1
 	m["date2"] = q.Date2
 	m["fields"] = strings.Join(q.Fields, ",")
+	m["attribution"] = q.Attribution
 
 	for k := range m {
 		if len(m[k]) == 0 {

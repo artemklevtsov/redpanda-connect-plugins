@@ -28,5 +28,8 @@ func inputConfig() *service.ConfigSpec {
 				Description("End date of the sample period in YYYY-MM-DD format.").
 				Default("today").
 				Optional(),
+			service.NewStringEnumField("attribution", "FIRST", "LAST", "LASTSIGN", "LAST_YANDEX_DIRECT_CLICK", "CROSS_DEVICE_LAST_SIGNIFICANT", "CROSS_DEVICE_FIRST", "CROSS_DEVICE_LAST_YANDEX_DIRECT_CLICK", "CROSS_DEVICE_LAST", "AUTOMATIC").
+				Description("Attribution model.").
+				Optional(),
 		)
 }

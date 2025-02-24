@@ -18,13 +18,14 @@ input:
       - ym:s:parsedParamsKey2
     date1: 2025-02-01
     date2: 2025-02-01
+    attribution: CROSS_DEVICE_LAST_SIGNIFICANT
 
 pipeline:
   processors:
     - mutation: |
         #!blobl
         root.fetched_at = now()
-        root.x = (this.page_views * 10).or(null)
+        root.query = @query
 
 output:
   stdout: {}

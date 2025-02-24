@@ -54,5 +54,12 @@ func inputFromConfig(conf *service.ParsedConfig, mgr *service.Resources) (servic
 		}
 	}
 
+	if conf.Contains("attribution") {
+		input.query.Attribution, err = conf.FieldString("attribution")
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	return input, nil
 }
