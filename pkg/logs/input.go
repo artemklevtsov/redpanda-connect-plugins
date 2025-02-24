@@ -247,6 +247,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 			msg.MetaSetMut("total_parts", len(input.request.Parts))
 			msg.MetaSetMut("current_part", input.part+1)
 			msg.MetaSetMut("current_row", rowNumber)
+			msg.MetaSetMut("query", input.query.Map())
 
 			msgs = append(msgs, msg)
 

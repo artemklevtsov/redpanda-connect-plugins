@@ -12,6 +12,17 @@ type apiQuery struct {
 	Attribution string   `json:"attribution"`
 }
 
+func (q *apiQuery) Map() map[string]any {
+	m := make(map[string]any)
+	m["source"] = q.Source
+	m["date1"] = q.Date1
+	m["date2"] = q.Date2
+	m["fields"] = q.Fields
+	m["attribution"] = q.Attribution
+
+	return m
+}
+
 func (q *apiQuery) Params() map[string]string {
 	m := make(map[string]string)
 	m["source"] = q.Source
