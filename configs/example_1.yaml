@@ -18,7 +18,6 @@ input:
     date2: 2025-02-28
     # filters: ym:s:lastTrafficSource=='direct'
     # filters: ym:s:date=='2025-02-03'
-    format_keys: true
 
 pipeline:
   processors:

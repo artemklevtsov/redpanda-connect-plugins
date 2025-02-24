@@ -18,9 +18,9 @@ const (
 
 func init() {
 	err := service.RegisterBatchInput(
-		"yandex_metrika_stat_table", inputSpec(),
+		"yandex_metrika_stat_table", inputConfig(),
 		func(conf *service.ParsedConfig, mgr *service.Resources) (service.BatchInput, error) {
-			return inputFromParsed(conf, mgr)
+			return inputFromConfig(conf, mgr)
 		})
 	if err != nil {
 		panic(err)
@@ -28,15 +28,14 @@ func init() {
 }
 
 type benthosInput struct {
-	token      string
-	fetched    int
-	total      int
-	formatKeys bool
-	query      *apiQuery
-	client     *req.Client
-	logger     *service.Logger
-	shutSig    *shutdown.Signaller
-	clientMut  sync.Mutex
+	token     string
+	fetched   int
+	total     int
+	query     *apiQuery
+	client    *req.Client
+	logger    *service.Logger
+	shutSig   *shutdown.Signaller
+	clientMut sync.Mutex
 }
 
 func (input *benthosInput) Connect(ctx context.Context) error {
@@ -96,7 +95,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 	input.fetched += len(data.Data)
 
-	msgs, err := data.Batch(input.formatKeys)
+	msgs, err := data.Batch()
 	if err != nil {
 		return nil, nil, err
 	}

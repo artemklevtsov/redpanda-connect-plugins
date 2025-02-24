@@ -19,7 +19,7 @@ type apiResponseEntry struct {
 	Metrics []float64 `json:"metrics"`
 }
 
-func (r *apiResponse) Batch(formatKeys bool) (service.MessageBatch, error) {
+func (r *apiResponse) Batch() (service.MessageBatch, error) {
 	msgs := make(service.MessageBatch, len(r.Data))
 
 	for i, e := range r.Data {
@@ -27,19 +27,13 @@ func (r *apiResponse) Batch(formatKeys bool) (service.MessageBatch, error) {
 
 		for di, d := range e.Dimensions {
 			k := r.Query.Dimensions[di]
-			if formatKeys {
-				k = misc.FormatKey(k)
-			}
-
+			k = misc.ProcessKey(k)
 			row[k] = d.Name
 		}
 
 		for mi, m := range e.Metrics {
 			k := r.Query.Metrics[mi]
-			if formatKeys {
-				k = misc.FormatKey(k)
-			}
-
+			k = misc.ProcessKey(k)
 			row[k] = m
 		}
 

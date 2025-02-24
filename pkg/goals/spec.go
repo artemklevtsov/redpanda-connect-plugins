@@ -2,7 +2,7 @@ package goals
 
 import "github.com/redpanda-data/benthos/v4/public/service"
 
-func inputSpec() *service.ConfigSpec {
+func inputConfig() *service.ConfigSpec {
 	return service.NewConfigSpec().
 		Beta().
 		Categories("api", "http", "yandex").

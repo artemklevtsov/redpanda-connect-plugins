@@ -6,7 +6,7 @@ import (
 	"github.com/iancoleman/strcase"
 )
 
-func FormatKey(k string) string {
+func ProcessKey(k string) string {
 	k = regexp.MustCompile("^ym:.*:").
 		ReplaceAllString(k, "")
 

@@ -2,9 +2,9 @@
 
 Redpanda connect plugins to fetch data from the Yandex.Metrika API.
 
-## Build
+## Install
 
-Build and install binary:
+Build and Install binary:
 
 ```sh
 go install github.com/artemklevtsov/redpanda-connect-yandex-metrika@latest
@@ -15,6 +15,8 @@ Or download binary with:
 ```sh
 curl -s https://i.jpillora.com/artemklevtsov/redpanda-connect-yandex-metrika@latest! | bash
 ```
+
+Remove `!` if you want to install to the current directory.
 
 Alternatively pull a Docker image with:
 
@@ -42,7 +44,6 @@ input:
     date2: 2025-02-28
     # filters: ym:s:lastTrafficSource=='direct'
     # filters: ym:s:date=='2025-02-03'
-    format_keys: true
 
 output:
   stdout: {}

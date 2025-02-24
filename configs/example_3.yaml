@@ -9,17 +9,22 @@ input:
     fields:
       - ym:s:dateTime
       - ym:s:visitID
+      - ym:s:watchIDs
       - ym:s:isNewUser
       - ym:s:pageViews
-    date1: 2025-01-01
-    date2: 2025-01-01
-    format_keys: true
+      - ym:s:goalsID
+      - ym:s:goalsDateTime
+      - ym:s:parsedParamsKey1
+      - ym:s:parsedParamsKey2
+    date1: 2025-02-01
+    date2: 2025-02-01
 
 pipeline:
   processors:
     - mutation: |
         #!blobl
         root.fetched_at = now()
+        root.x = (this.page_views * 10).or(null)
 
 output:
   stdout: {}

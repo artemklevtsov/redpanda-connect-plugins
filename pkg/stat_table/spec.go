@@ -2,7 +2,7 @@ package stat_table
 
 import "github.com/redpanda-data/benthos/v4/public/service"
 
-func inputSpec() *service.ConfigSpec {
+func inputConfig() *service.ConfigSpec {
 	return service.NewConfigSpec().
 		Beta().
 		Categories("api", "http", "yandex").
@@ -46,8 +46,5 @@ func inputSpec() *service.ConfigSpec {
 				Optional(),
 			service.NewStringListField("direct_client_logins").
 				Description("A list of usernames of Yandex Direct clients"),
-			service.NewBoolField("format_keys").
-				Description("Format output JSON keys.").
-				Optional(),
 		)
 }

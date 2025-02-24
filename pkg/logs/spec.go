@@ -2,7 +2,7 @@ package logs
 
 import "github.com/redpanda-data/benthos/v4/public/service"
 
-func inputSpec() *service.ConfigSpec {
+func inputConfig() *service.ConfigSpec {
 	return service.NewConfigSpec().
 		Beta().
 		Categories("api", "http", "yandex").
@@ -27,9 +27,6 @@ func inputSpec() *service.ConfigSpec {
 			service.NewStringField("date2").
 				Description("End date of the sample period in YYYY-MM-DD format.").
 				Default("today").
-				Optional(),
-			service.NewBoolField("format_keys").
-				Description("Format output JSON keys.").
 				Optional(),
 		)
 }

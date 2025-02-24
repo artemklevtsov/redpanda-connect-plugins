@@ -23,9 +23,9 @@ const (
 
 func init() {
 	err := service.RegisterBatchInput(
-		"yandex_metrika_logs", inputSpec(),
+		"yandex_metrika_logs", inputConfig(),
 		func(conf *service.ParsedConfig, mgr *service.Resources) (service.BatchInput, error) {
-			return inputFromParsed(conf, mgr)
+			return inputFromConfig(conf, mgr)
 		})
 	if err != nil {
 		panic(err)
@@ -33,18 +33,17 @@ func init() {
 }
 
 type benthosInput struct {
-	token      string
-	counter    int
-	formatKeys bool
-	done       bool
-	part       int
-	query      *apiQuery
-	eval       *evalLogRequest
-	request    *apiLogRequest
-	client     *req.Client
-	logger     *service.Logger
-	shutSig    *shutdown.Signaller
-	clientMut  sync.Mutex
+	token     string
+	counter   int
+	done      bool
+	part      int
+	query     *apiQuery
+	eval      *evalLogRequest
+	request   *apiLogRequest
+	client    *req.Client
+	logger    *service.Logger
+	shutSig   *shutdown.Signaller
+	clientMut sync.Mutex
 }
 
 func (input *benthosInput) Connect(ctx context.Context) error {
@@ -237,11 +236,8 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 			row := make(map[string]any)
 
 			for i, field := range header {
-				if input.formatKeys {
-					field = misc.FormatKey(field)
-				}
-
-				row[field] = record[i]
+				field = misc.ProcessKey(field)
+				row[field] = misc.ProcessValue(header[i], record[i])
 			}
 
 			msg := service.NewMessage(nil)

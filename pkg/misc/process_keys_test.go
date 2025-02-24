@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestFormatKey(t *testing.T) {
+func TestProcessKey(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    string
@@ -41,7 +41,7 @@ func TestFormatKey(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			assert.Equal(t, tt.expected, FormatKey(tt.input))
+			assert.Equal(t, tt.expected, ProcessKey(tt.input))
 		})
 	}
 }

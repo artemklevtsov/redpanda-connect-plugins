@@ -5,7 +5,7 @@ import (
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 
-func inputFromParsed(conf *service.ParsedConfig, mgr *service.Resources) (service.BatchInput, error) {
+func inputFromConfig(conf *service.ParsedConfig, mgr *service.Resources) (service.BatchInput, error) {
 	input := &benthosInput{
 		logger:  mgr.Logger(),
 		shutSig: shutdown.NewSignaller(),

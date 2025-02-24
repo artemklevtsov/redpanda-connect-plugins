@@ -19,9 +19,9 @@ const (
 
 func init() {
 	err := service.RegisterBatchInput(
-		"yandex_metrika_goals", inputSpec(),
+		"yandex_metrika_goals", inputConfig(),
 		func(conf *service.ParsedConfig, mgr *service.Resources) (service.BatchInput, error) {
-			return inputFromParsed(conf, mgr)
+			return inputFromConfig(conf, mgr)
 		})
 	if err != nil {
 		panic(err)

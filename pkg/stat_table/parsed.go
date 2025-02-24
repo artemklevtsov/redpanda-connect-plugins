@@ -5,7 +5,7 @@ import (
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 
-func inputFromParsed(conf *service.ParsedConfig, mgr *service.Resources) (service.BatchInput, error) {
+func inputFromConfig(conf *service.ParsedConfig, mgr *service.Resources) (service.BatchInput, error) {
 	input := &benthosInput{
 		logger:  mgr.Logger(),
 		shutSig: shutdown.NewSignaller(),
@@ -95,13 +95,6 @@ func inputFromParsed(conf *service.ParsedConfig, mgr *service.Resources) (servic
 
 	if conf.Contains("direct_client_logins") {
 		input.query.DirectLogins, err = conf.FieldStringList("direct_client_logins")
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	if conf.Contains("format_keys") {
-		input.formatKeys, err = conf.FieldBool("format_keys")
 		if err != nil {
 			return nil, err
 		}
