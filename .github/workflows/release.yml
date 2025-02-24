@@ -29,8 +29,6 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Install upx
-        run: sudo apt install -y upx
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
