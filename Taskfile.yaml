@@ -41,6 +41,12 @@ tasks:
     cmds:
       - gofumpt -w -l .
 
+  go:test:
+    sources:
+      - "**/*_test.go"
+    cmds:
+      - go test ./...
+
   go:build:
     sources:
       - "**/*.go"
