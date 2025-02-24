@@ -37,14 +37,18 @@ func inputConfig() *service.ConfigSpec {
 				Optional(),
 			service.NewStringField("lang").
 				Description("Language.").
+				Example("en").
 				Optional(),
 			service.NewStringField("preset").
 				Description("Report preset.").
+				Example("sources_summary").
 				Optional(),
 			service.NewStringField("timezone").
 				Description("Time zone in ±hh:mm format within the range of [-23:59; +23:59]").
+				Example("+03:00").
 				Optional(),
 			service.NewStringListField("direct_client_logins").
-				Description("A list of usernames of Yandex Direct clients"),
+				Description("A list of usernames of Yandex Direct clients").
+				Optional(),
 		)
 }

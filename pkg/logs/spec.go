@@ -30,6 +30,7 @@ func inputConfig() *service.ConfigSpec {
 				Optional(),
 			service.NewStringEnumField("attribution", "FIRST", "LAST", "LASTSIGN", "LAST_YANDEX_DIRECT_CLICK", "CROSS_DEVICE_LAST_SIGNIFICANT", "CROSS_DEVICE_FIRST", "CROSS_DEVICE_LAST_YANDEX_DIRECT_CLICK", "CROSS_DEVICE_LAST", "AUTOMATIC").
 				Description("Attribution model.").
+				Example("LASTSIGN").
 				Optional(),
 		)
 }
