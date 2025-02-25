@@ -29,6 +29,8 @@ import (
 	"github.com/redpanda-data/benthos/v4/public/bloblang"
 	"github.com/redpanda-data/benthos/v4/public/service"
 
+	_ "github.com/redpanda-data/connect/v4/public/components/all"
+
 	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/goals"
 	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/logs"
 	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/stat_table"
