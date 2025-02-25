@@ -28,3 +28,7 @@ linters:
     - forcetypeassert
     - musttag
     - loggercheck
+
+issues:
+  exclude-dirs:
+    - cmd/docs-gen
