@@ -59,6 +59,16 @@ tasks:
     cmds:
       - goreleaser release --snapshot --clean
 
+  docs:
+    cmds:
+      - mkdir -p docs/modules/components/pages/
+      - mkdir -p docs/modules/components/pages/http/
+      - mkdir -p docs/modules/components/pages/logger/
+      - mkdir -p docs/modules/components/pages/redpanda/
+      - mkdir -p docs/modules/guides/pages/bloblang/
+      - mkdir -p docs/modules/configuration/pages/
+      - go run ./cmd/docs-gen
+
   docker:build:
     cmds:
       - docker build --tag {{.DOCKER_IMAGE}}:{{.DOCKER_TAG}} --tag {{.DOCKER_IMAGE}}:latest .

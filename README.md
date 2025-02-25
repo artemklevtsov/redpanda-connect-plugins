@@ -59,6 +59,11 @@ See also `configs/` for the more examples.
 
 ## See also
 
+### Documentation
+
+- [plugin docs](docs/modules/components/pages/)
+- [redpanda connect docs](https://docs.redpanda.com/redpanda-connect/)
+
 ### Authorization
 
 - [debug token](https://yandex.ru/dev/id/doc/en/tokens/debug-token)
