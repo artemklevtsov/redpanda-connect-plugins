@@ -22,6 +22,24 @@ type apiQuery struct {
 	DirectLogins []string `json:"direct_client_logins"`
 }
 
+func (q *apiQuery) Map() map[string]any {
+	m := make(map[string]any)
+	m["ids"] = q.IDs
+	m["filters"] = q.Filters
+	m["date1"] = q.Date1
+	m["date2"] = q.Date2
+	m["dimensions"] = q.Dimensions
+	m["metrics"] = q.Metrics
+	m["lang"] = q.Lang
+	m["preset"] = q.Preset
+	m["sort"] = q.Sort
+	m["timezone"] = q.Timezone
+	m["limit"] = q.Limit
+	m["offset"] = q.Offset
+
+	return m
+}
+
 func (q *apiQuery) Params() map[string]string {
 	m := make(map[string]string)
 	m["ids"] = strings.Trim(strings.Join(strings.Fields(fmt.Sprint(q.IDs)), ","), "[]")

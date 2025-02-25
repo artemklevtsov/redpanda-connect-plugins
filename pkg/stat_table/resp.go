@@ -39,8 +39,10 @@ func (r *apiResponse) Batch() (service.MessageBatch, error) {
 
 		msg := service.NewMessage(nil)
 		msg.SetStructuredMut(row)
-		msg.MetaSetMut("query", r.Query)
-		msg.MetaSetMut("total_rows", r.TotalRows)
+		msg.MetaSetMut("query", r.Query.Map())
+		msg.MetaSetMut("limit", r.Query.Limit)
+		msg.MetaSetMut("offset", r.Query.Offset)
+		msg.MetaSetMut("total", r.TotalRows)
 
 		msgs[i] = msg
 	}
