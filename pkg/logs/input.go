@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/csv"
 	"io"
-	"strconv"
 	"sync"
 	"time"
 
@@ -67,19 +66,8 @@ func (input *benthosInput) Connect(ctx context.Context) error {
 			With("counter_id", input.counter).
 			Debug("evaluate log request")
 
-		var eval api.EvalLogRequestResponse
-
-		resp, err := input.client.R().
-			SetContext(ctx).
-			SetPathParam("counter_id", strconv.Itoa(input.counter)).
-			SetQueryParams(input.query.Params()).
-			SetSuccessResult(&eval).
-			Get("counter/{counter_id}/logrequests/evaluate")
+		eval, err := input.client.LogRequest.EvalWithContext(ctx, input.counter, input.query)
 		if err != nil {
-			return service.ErrEndOfInput
-		}
-
-		if resp.IsErrorState() {
 			return service.ErrEndOfInput
 		}
 
@@ -102,19 +90,8 @@ func (input *benthosInput) Connect(ctx context.Context) error {
 			With("counter_id", input.counter).
 			Debug("create log request")
 
-		var logreq api.LogRequestResponse
-
-		resp, err := input.client.R().
-			SetContext(ctx).
-			SetPathParam("counter_id", strconv.Itoa(input.counter)).
-			SetQueryParams(input.query.Params()).
-			SetSuccessResult(&logreq).
-			Post("counter/{counter_id}/logrequests")
+		logreq, err := input.client.LogRequest.CreateWithContext(ctx, input.counter, input.query)
 		if err != nil {
-			return service.ErrEndOfInput
-		}
-
-		if resp.IsErrorState() {
 			return service.ErrEndOfInput
 		}
 
@@ -135,20 +112,8 @@ func (input *benthosInput) Connect(ctx context.Context) error {
 				With("request_id", input.request.RequestID).
 				Trace("update log request info")
 
-			var logreq api.LogRequestResponse
-
-			resp, err := input.client.R().
-				SetContext(ctx).
-				SetPathParam("counter_id", strconv.Itoa(input.counter)).
-				SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
-				SetQueryParams(input.query.Params()).
-				SetSuccessResult(&logreq).
-				Get("counter/{counter_id}/logrequest/{request_id}")
+			logreq, err := input.client.LogRequest.GetWithContext(ctx, input.counter, input.request.RequestID)
 			if err != nil {
-				return service.ErrEndOfInput
-			}
-
-			if resp.IsErrorState() {
 				return service.ErrEndOfInput
 			}
 
@@ -194,27 +159,18 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 			With("part", input.part).
 			Debug("fetch log request")
 
-		resp, err := input.client.R().
-			SetContext(ctx).
-			SetPathParam("counter_id", strconv.Itoa(input.counter)).
-			SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
-			SetPathParam("part", strconv.Itoa(input.part)).
-			Get("counter/{counter_id}/logrequest/{request_id}/part/{part}/download")
+		httpReader, err := input.client.LogRequest.DownloadWithContext(ctx, input.counter, input.request.RequestID, input.part)
 		if err != nil {
 			return nil, nil, service.ErrEndOfInput
 		}
 
-		if resp.IsErrorState() {
-			return nil, nil, service.ErrEndOfInput
-		}
+		defer httpReader.Close()
 
-		defer resp.Body.Close()
+		csvReader := csv.NewReader(httpReader)
+		csvReader.Comma = '\t'
+		csvReader.LazyQuotes = true
 
-		reader := csv.NewReader(resp.Body)
-		reader.Comma = '\t'
-		reader.LazyQuotes = true
-
-		header, err := reader.Read()
+		csvHeader, err := csvReader.Read()
 		if err != nil {
 			return nil, nil, err
 		}
@@ -222,7 +178,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 		var rowNumber uint64 = 1
 
 		for {
-			record, err := reader.Read()
+			csvRow, err := csvReader.Read()
 			if err == io.EOF {
 				break
 			}
@@ -233,9 +189,10 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 			row := make(map[string]any)
 
-			for i, field := range header {
-				field = misc.ProcessKey(field)
-				row[field] = misc.ProcessValue(header[i], record[i])
+			for i, key := range csvHeader {
+				key = misc.ProcessKey(key)
+				value := misc.ProcessValue(csvHeader[i], csvRow[i])
+				row[key] = value
 			}
 
 			msg := service.NewMessage(nil)
@@ -273,20 +230,9 @@ func (input *benthosInput) Close(ctx context.Context) error {
 	if input.request == nil {
 		return nil
 	} else {
-		var logreq api.LogRequestResponse
-
-		resp, err := input.client.R().
-			SetContext(ctx).
-			SetPathParam("counter_id", strconv.Itoa(input.counter)).
-			SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
-			SetSuccessResult(&logreq).
-			Get("counter/{counter_id}/logrequest/{request_id}")
+		logreq, err := input.client.LogRequest.GetWithContext(ctx, input.counter, input.request.RequestID)
 		if err != nil {
 			return err
-		}
-
-		if resp.IsErrorState() {
-			return resp.Err
 		}
 
 		input.request = &logreq.Request
@@ -299,17 +245,9 @@ func (input *benthosInput) Close(ctx context.Context) error {
 			With("status", input.request.Status).
 			Debug("cancel log request")
 
-		resp, err := input.client.R().
-			SetContext(ctx).
-			SetPathParam("counter_id", strconv.Itoa(input.counter)).
-			SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
-			Post("counter/{counter_id}/logrequest/{request_id}/cancel")
+		_, err := input.client.LogRequest.CancelWithContext(ctx, input.counter, input.request.RequestID)
 		if err != nil {
 			return err
-		}
-
-		if resp.IsErrorState() {
-			return resp.Err
 		}
 	} else {
 		input.logger.
@@ -318,17 +256,9 @@ func (input *benthosInput) Close(ctx context.Context) error {
 			With("status", input.request.Status).
 			Debug("clean log request")
 
-		resp, err := input.client.R().
-			SetContext(ctx).
-			SetPathParam("counter_id", strconv.Itoa(input.counter)).
-			SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
-			Post("counter/{counter_id}/logrequest/{request_id}/clean")
+		_, err := input.client.LogRequest.CleanWithContext(ctx, input.counter, input.request.RequestID)
 		if err != nil {
 			return err
-		}
-
-		if resp.IsErrorState() {
-			return resp.Err
 		}
 	}
 

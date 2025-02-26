@@ -1,6 +1,7 @@
 package api
 
 import (
+	"context"
 	"fmt"
 	"strconv"
 	"strings"
@@ -8,6 +9,30 @@ import (
 	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/misc"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
+
+type StatTableService struct {
+	client *Client
+}
+
+func (s *StatTableService) Get(query *StatTableQuery) (*StatTableResponse, error) {
+	return s.GetWithContext(context.Background(), query)
+}
+
+func (s *StatTableService) GetWithContext(ctx context.Context, query *StatTableQuery) (*StatTableResponse, error) {
+	var data StatTableResponse
+
+	_, err := s.client.R().
+		SetContext(ctx).
+		SetQueryParams(query.Params()).
+		SetSuccessResult(&data).
+		Get("data")
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
+}
 
 // StatTableQuery represents a query for fetching data from Yandex.Metrika API stat tables.
 type StatTableQuery struct {
@@ -88,6 +113,10 @@ type StatTableResponseEntry struct {
 
 // Batch creates a service.MessageBatch from the StatTableResponse.
 func (r *StatTableResponse) Batch() (service.MessageBatch, error) {
+	if r.Data == nil {
+		return nil, nil
+	}
+
 	msgs := make(service.MessageBatch, len(r.Data))
 
 	for i, e := range r.Data {

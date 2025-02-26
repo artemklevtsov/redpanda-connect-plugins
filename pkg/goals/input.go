@@ -2,7 +2,6 @@ package goals
 
 import (
 	"context"
-	"strconv"
 	"sync"
 
 	"github.com/Jeffail/shutdown"
@@ -67,27 +66,17 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 	input.logger.Info("Fetch Yandex.Metrika API data")
 
-	var data api.GoalsResponse
-
-	resp, err := input.client.R().
-		SetContext(ctx).
-		SetSuccessResult(&data).
-		SetPathParam("counter_id", strconv.Itoa(input.counter)).
-		Get("counter/{counter_id}/goals")
+	data, err := input.client.Goal.GetWithContext(ctx, input.counter)
 	if err != nil {
-		return nil, nil, err
-	}
-
-	if resp.IsErrorState() {
 		return nil, nil, service.ErrEndOfInput
 	}
-
-	input.done = true
 
 	msgs, err := data.Batch()
 	if err != nil {
 		return nil, nil, err
 	}
+
+	input.done = true
 
 	ack := func(context.Context, error) error { return nil }
 

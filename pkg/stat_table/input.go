@@ -69,24 +69,20 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 	input.logger.Info("Fetch Yandex.Metrika API data")
 
-	var data api.StatTableResponse
-
-	resp, err := input.client.R().
-		SetContext(ctx).
-		SetQueryParams(input.query.Params()).
-		SetSuccessResult(&data).
-		Get("data")
+	data, err := input.client.StatTable.GetWithContext(ctx, input.query)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, service.ErrEndOfInput
 	}
 
-	if resp.IsErrorState() {
+	if data == nil {
+		input.logger.
+			Warn("response return no data")
 		return nil, nil, service.ErrEndOfInput
 	}
 
 	if data.TotalRows == 0 {
 		input.logger.
-			Info("response return 0 rows")
+			Warn("response return 0 rows")
 
 		return nil, nil, service.ErrEndOfInput
 	}

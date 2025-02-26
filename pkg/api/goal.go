@@ -1,10 +1,35 @@
 package api
 
 import (
+	"context"
 	"encoding/json"
+	"strconv"
 
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
+
+type GoalService struct {
+	client *Client
+}
+
+func (s *GoalService) Get(counter int) (*GoalsResponse, error) {
+	return s.GetWithContext(context.Background(), counter)
+}
+
+func (s *GoalService) GetWithContext(ctx context.Context, counter int) (*GoalsResponse, error) {
+	var data GoalsResponse
+
+	_, err := s.client.R().
+		SetContext(ctx).
+		SetSuccessResult(&data).
+		SetPathParam("counter_id", strconv.Itoa(counter)).
+		Get("counter/{counter_id}/goals")
+	if err != nil {
+		return nil, err
+	}
+
+	return &data, nil
+}
 
 // GoalsResponse represents a response containing a list of goals from the Yandex.Metrika API.
 type GoalsResponse struct {
@@ -28,6 +53,10 @@ type GoalsResponseEntry struct {
 
 // Batch creates a service.MessageBatch from the GoalsResponse.
 func (r *GoalsResponse) Batch() (service.MessageBatch, error) {
+	if r.Data == nil {
+		return nil, nil
+	}
+
 	msgs := make(service.MessageBatch, len(r.Data))
 
 	for i, row := range r.Data {

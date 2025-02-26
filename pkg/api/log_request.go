@@ -1,6 +1,133 @@
 package api
 
-import "strings"
+import (
+	"context"
+	"io"
+	"strconv"
+	"strings"
+)
+
+type LogRequestService struct {
+	client *Client
+}
+
+func (s *LogRequestService) Eval(counter int, query *LogRequestQuery) (*EvalLogRequestResponse, error) {
+	return s.EvalWithContext(context.Background(), counter, query)
+}
+
+func (s *LogRequestService) EvalWithContext(ctx context.Context, counter int, query *LogRequestQuery) (*EvalLogRequestResponse, error) {
+	var eval EvalLogRequestResponse
+
+	_, err := s.client.R().
+		SetContext(ctx).
+		SetPathParam("counter_id", strconv.Itoa(counter)).
+		SetQueryParams(query.Params()).
+		SetSuccessResult(&eval).
+		Get("counter/{counter_id}/logrequests/evaluate")
+	if err != nil {
+		return nil, err
+	}
+
+	return &eval, nil
+}
+
+func (s *LogRequestService) Create(counter int, query *LogRequestQuery) (*LogRequestResponse, error) {
+	return s.CreateWithContext(context.Background(), counter, query)
+}
+
+func (s *LogRequestService) CreateWithContext(ctx context.Context, counter int, query *LogRequestQuery) (*LogRequestResponse, error) {
+	var logreq LogRequestResponse
+
+	_, err := s.client.R().
+		SetContext(ctx).
+		SetPathParam("counter_id", strconv.Itoa(counter)).
+		SetQueryParams(query.Params()).
+		SetSuccessResult(&logreq).
+		Post("counter/{counter_id}/logrequests")
+	if err != nil {
+		return nil, err
+	}
+
+	return &logreq, nil
+}
+
+func (s *LogRequestService) Get(counter int, request uint64) (*LogRequestResponse, error) {
+	return s.GetWithContext(context.Background(), counter, request)
+}
+
+func (s *LogRequestService) GetWithContext(ctx context.Context, counter int, request uint64) (*LogRequestResponse, error) {
+	var logreq LogRequestResponse
+
+	_, err := s.client.R().
+		SetContext(ctx).
+		SetPathParam("counter_id", strconv.Itoa(counter)).
+		SetPathParam("request_id", strconv.FormatUint(request, 10)).
+		SetSuccessResult(&logreq).
+		Get("counter/{counter_id}/logrequest/{request_id}")
+	if err != nil {
+		return nil, err
+	}
+
+	return &logreq, nil
+}
+
+func (s *LogRequestService) Clean(counter int, request uint64) (*LogRequestResponse, error) {
+	return s.CleanWithContext(context.Background(), counter, request)
+}
+
+func (s *LogRequestService) CleanWithContext(ctx context.Context, counter int, request uint64) (*LogRequestResponse, error) {
+	var logreq LogRequestResponse
+
+	_, err := s.client.R().
+		SetContext(ctx).
+		SetPathParam("counter_id", strconv.Itoa(counter)).
+		SetPathParam("request_id", strconv.FormatUint(request, 10)).
+		SetSuccessResult(&logreq).
+		Post("counter/{counter_id}/logrequest/{request_id}/clean")
+	if err != nil {
+		return nil, err
+	}
+
+	return &logreq, nil
+}
+
+func (s *LogRequestService) Cancel(counter int, request uint64) (*LogRequestResponse, error) {
+	return s.CancelWithContext(context.Background(), counter, request)
+}
+
+func (s *LogRequestService) CancelWithContext(ctx context.Context, counter int, request uint64) (*LogRequestResponse, error) {
+	var logreq LogRequestResponse
+
+	_, err := s.client.R().
+		SetContext(ctx).
+		SetPathParam("counter_id", strconv.Itoa(counter)).
+		SetPathParam("request_id", strconv.FormatUint(request, 10)).
+		SetSuccessResult(&logreq).
+		Post("counter/{counter_id}/logrequest/{request_id}/cancel")
+	if err != nil {
+		return nil, err
+	}
+
+	return &logreq, nil
+}
+
+func (s *LogRequestService) Download(counter int, request uint64, part int) (io.ReadCloser, error) {
+	return s.DownloadWithContext(context.Background(), counter, request, part)
+}
+
+func (s *LogRequestService) DownloadWithContext(ctx context.Context, counter int, request uint64, part int) (io.ReadCloser, error) {
+	resp, err := s.client.R().
+		SetContext(ctx).
+		SetPathParam("counter_id", strconv.Itoa(counter)).
+		SetPathParam("request_id", strconv.FormatUint(request, 10)).
+		SetPathParam("part", strconv.Itoa(part)).
+		Get("counter/{counter_id}/logrequest/{request_id}/part/{part}/download")
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.Body, nil
+}
 
 // LogRequestQuery represents a query for requesting logs from the Yandex.Metrika API.
 type LogRequestQuery struct {

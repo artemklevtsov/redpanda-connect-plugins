@@ -17,8 +17,11 @@ const (
 // Client is a wrapper around req.Client for interacting with the Yandex.Metrika API.
 // It provides methods for creating and sending API requests, handling errors, and managing authentication.
 type Client struct {
-	client *req.Client
-	logger *service.Logger
+	client     *req.Client
+	logger     *service.Logger
+	Goal       *GoalService
+	StatTable  *StatTableService
+	LogRequest *LogRequestService
 }
 
 // R creates and returns a new req.Request instance.
@@ -40,7 +43,7 @@ func NewClient(kind, version, token string, logger *service.Logger) *Client {
 		SetCommonRetryCount(3).
 		SetCommonRetryBackoffInterval(1*time.Second, 5*time.Second).
 		SetCommonRetryCondition(func(resp *req.Response, err error) bool {
-			return err != nil || resp.GetStatusCode() == http.StatusTooManyRequests
+			return resp.GetStatusCode() == http.StatusTooManyRequests
 		}).
 		WrapRoundTripFunc(func(rt req.RoundTripper) req.RoundTripFunc {
 			return func(req *req.Request) (resp *req.Response, err error) {
@@ -57,12 +60,24 @@ func NewClient(kind, version, token string, logger *service.Logger) *Client {
 					With("error", err.Message, "code", err.Code).
 					Error("Yandex.Metrika API error")
 
+				resp.Err = err
+
+				return nil
+			}
+
+			if !resp.IsSuccessState() {
+				// Neither a success response nor a error response, record details to help troubleshooting
+				resp.Err = fmt.Errorf("Yandex.Metrika API unknown error: %s\nraw content:\n%s", resp.Status, resp.Dump())
+
 				return nil
 			}
 
 			return nil
-		}).
-		SetLogger(logger)
+		})
+
+	if logger != nil {
+		httpClient.SetLogger(logger)
+	}
 
 	if len(token) > 0 {
 		httpClient.SetCommonBearerAuthToken(token)
@@ -72,6 +87,10 @@ func NewClient(kind, version, token string, logger *service.Logger) *Client {
 		client: httpClient,
 		logger: logger,
 	}
+
+	c.Goal = &GoalService{client: c}
+	c.LogRequest = &LogRequestService{client: c}
+	c.StatTable = &StatTableService{client: c}
 
 	return c
 }
