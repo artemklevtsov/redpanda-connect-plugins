@@ -2,6 +2,7 @@ package stat_table
 
 import (
 	"github.com/Jeffail/shutdown"
+	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/api"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 
@@ -9,7 +10,7 @@ func inputFromConfig(conf *service.ParsedConfig, mgr *service.Resources) (servic
 	input := &benthosInput{
 		logger:  mgr.Logger(),
 		shutSig: shutdown.NewSignaller(),
-		query:   &apiQuery{},
+		query:   &api.StatTableQuery{},
 	}
 
 	input.query.Offset = 0

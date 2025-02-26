@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"log/slog"
 	"net/http"
 	"time"
 
@@ -11,10 +10,28 @@ import (
 )
 
 const (
+	// BaseURL is the base URL for Yandex.Metrika API requests.
 	APIBaseURL = "https://api-metrika.yandex.com"
 )
 
-func NewClient(kind, version, token string, logger *service.Logger) *req.Client {
+// Client is a wrapper around req.Client for interacting with the Yandex.Metrika API.
+// It provides methods for creating and sending API requests, handling errors, and managing authentication.
+type Client struct {
+	client *req.Client
+	logger *service.Logger
+}
+
+// R creates and returns a new req.Request instance.
+// This method is a convenient way to start building a new API request
+// with the pre-configured client settings, such as base URL, authentication,
+// retry policy, and error handling.
+func (c *Client) R() *req.Request {
+	return c.client.R()
+}
+
+// NewClient creates a new req.Client configured for interacting with the Yandex.Metrika API.
+// It sets the base URL, common error result, retry policy, logging, and authentication.
+func NewClient(kind, version, token string, logger *service.Logger) *Client {
 	baseURL := fmt.Sprintf("%s/%s/%s", APIBaseURL, kind, version)
 
 	httpClient := req.C().
@@ -51,29 +68,10 @@ func NewClient(kind, version, token string, logger *service.Logger) *req.Client 
 		httpClient.SetCommonBearerAuthToken(token)
 	}
 
-	return httpClient
-}
+	c := &Client{
+		client: httpClient,
+		logger: logger,
+	}
 
-// APIError API error object
-// Source: https://yandex.ru/dev/metrika/doc/api2/management/concept/errors.html#errors__resp
-type APIError struct {
-	Code    int    `json:"code"`
-	Message string `json:"message"`
-	Reasons []struct {
-		ErrorType string `json:"error_type"`
-		Message   string `json:"message"`
-		Location  string `json:"location"`
-	} `json:"errors"`
-}
-
-// API error string representation.
-func (e APIError) Error() string {
-	return fmt.Sprintf("Yandex.Metriika API error %d: %s", e.Code, e.Message)
-}
-
-func (e *APIError) LogValue() slog.Value {
-	return slog.GroupValue(
-		slog.Int("code", e.Code),
-		slog.String("message", e.Message),
-	)
+	return c
 }

@@ -11,7 +11,6 @@ import (
 	"github.com/Jeffail/shutdown"
 	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/api"
 	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/misc"
-	"github.com/imroc/req/v3"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 
@@ -37,10 +36,10 @@ type benthosInput struct {
 	counter   int
 	done      bool
 	part      int
-	query     *apiQuery
-	eval      *evalLogRequest
-	request   *apiLogRequest
-	client    *req.Client
+	query     *api.LogRequestQuery
+	eval      *api.EvalLogRequestResponseEntry
+	request   *api.LogRequestResponseEntry
+	client    *api.Client
 	logger    *service.Logger
 	shutSig   *shutdown.Signaller
 	clientMut sync.Mutex
@@ -54,21 +53,21 @@ func (input *benthosInput) Connect(ctx context.Context) error {
 		return nil
 	}
 
-	httpClient := api.NewClient(
+	apiClient := api.NewClient(
 		apiKind,
 		apiVersion,
 		input.token,
 		input.logger,
 	)
 
-	input.client = httpClient
+	input.client = apiClient
 
 	if input.eval == nil {
 		input.logger.
 			With("counter_id", input.counter).
 			Debug("evaluate log request")
 
-		var eval apiEvalLogRequestResponse
+		var eval api.EvalLogRequestResponse
 
 		resp, err := input.client.R().
 			SetContext(ctx).
@@ -103,7 +102,7 @@ func (input *benthosInput) Connect(ctx context.Context) error {
 			With("counter_id", input.counter).
 			Debug("create log request")
 
-		var logreq apiLogRequestResponse
+		var logreq api.LogRequestResponse
 
 		resp, err := input.client.R().
 			SetContext(ctx).
@@ -136,7 +135,7 @@ func (input *benthosInput) Connect(ctx context.Context) error {
 				With("request_id", input.request.RequestID).
 				Trace("update log request info")
 
-			var logreq apiLogRequestResponse
+			var logreq api.LogRequestResponse
 
 			resp, err := input.client.R().
 				SetContext(ctx).
@@ -275,7 +274,7 @@ func (input *benthosInput) Close(ctx context.Context) error {
 	if input.request == nil {
 		return nil
 	} else {
-		var logreq apiLogRequestResponse
+		var logreq api.LogRequestResponse
 
 		resp, err := input.client.R().
 			SetContext(ctx).

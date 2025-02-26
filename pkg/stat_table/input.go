@@ -6,7 +6,6 @@ import (
 
 	"github.com/Jeffail/shutdown"
 	"github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/api"
-	"github.com/imroc/req/v3"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 
@@ -31,8 +30,8 @@ type benthosInput struct {
 	token     string
 	fetched   int
 	total     int
-	query     *apiQuery
-	client    *req.Client
+	query     *api.StatTableQuery
+	client    *api.Client
 	logger    *service.Logger
 	shutSig   *shutdown.Signaller
 	clientMut sync.Mutex
@@ -46,14 +45,14 @@ func (input *benthosInput) Connect(ctx context.Context) error {
 		return nil
 	}
 
-	httpClient := api.NewClient(
+	apiClient := api.NewClient(
 		apiKind,
 		apiVersion,
 		input.token,
 		input.logger,
 	)
 
-	input.client = httpClient
+	input.client = apiClient
 
 	return nil
 }
@@ -70,7 +69,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 
 	input.logger.Info("Fetch Yandex.Metrika API data")
 
-	var data apiResponse
+	var data api.StatTableResponse
 
 	resp, err := input.client.R().
 		SetContext(ctx).
@@ -86,6 +85,9 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 	}
 
 	if data.TotalRows == 0 {
+		input.logger.
+			Info("response return 0 rows")
+
 		return nil, nil, service.ErrEndOfInput
 	}
 
