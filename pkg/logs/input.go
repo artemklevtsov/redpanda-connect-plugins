@@ -199,7 +199,6 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 			SetPathParam("counter_id", strconv.Itoa(input.counter)).
 			SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
 			SetPathParam("part", strconv.Itoa(input.part)).
-			SetQueryParams(input.query.Params()).
 			Get("counter/{counter_id}/logrequest/{request_id}/part/{part}/download")
 		if err != nil {
 			return nil, nil, service.ErrEndOfInput
@@ -280,7 +279,6 @@ func (input *benthosInput) Close(ctx context.Context) error {
 			SetContext(ctx).
 			SetPathParam("counter_id", strconv.Itoa(input.counter)).
 			SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
-			SetQueryParams(input.query.Params()).
 			SetSuccessResult(&logreq).
 			Get("counter/{counter_id}/logrequest/{request_id}")
 		if err != nil {
@@ -305,7 +303,6 @@ func (input *benthosInput) Close(ctx context.Context) error {
 			SetContext(ctx).
 			SetPathParam("counter_id", strconv.Itoa(input.counter)).
 			SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
-			SetQueryParams(input.query.Params()).
 			Post("counter/{counter_id}/logrequest/{request_id}/cancel")
 		if err != nil {
 			return err
@@ -325,7 +322,6 @@ func (input *benthosInput) Close(ctx context.Context) error {
 			SetContext(ctx).
 			SetPathParam("counter_id", strconv.Itoa(input.counter)).
 			SetPathParam("request_id", strconv.FormatUint(input.request.RequestID, 10)).
-			SetQueryParams(input.query.Params()).
 			Post("counter/{counter_id}/logrequest/{request_id}/clean")
 		if err != nil {
 			return err
