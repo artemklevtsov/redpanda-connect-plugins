@@ -26,7 +26,6 @@ func (s *StatTableService) GetWithContext(ctx context.Context, query *StatTableQ
 		SetQueryParams(query.Params()).
 		SetSuccessResult(&data).
 		Get("data")
-
 	if err != nil {
 		return nil, err
 	}
