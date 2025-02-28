@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 
@@ -43,7 +44,7 @@ func NewClient(kind, version, token string, logger *service.Logger) *Client {
 		SetCommonRetryCount(3).
 		SetCommonRetryBackoffInterval(1*time.Second, 5*time.Second).
 		SetCommonRetryCondition(func(resp *req.Response, err error) bool {
-			return resp.GetStatusCode() == http.StatusTooManyRequests
+			return resp != nil && resp.GetStatusCode() == http.StatusTooManyRequests
 		}).
 		WrapRoundTripFunc(func(rt req.RoundTripper) req.RoundTripFunc {
 			return func(req *req.Request) (resp *req.Response, err error) {
@@ -67,7 +68,9 @@ func NewClient(kind, version, token string, logger *service.Logger) *Client {
 
 			if !resp.IsSuccessState() {
 				// Neither a success response nor a error response, record details to help troubleshooting
-				resp.Err = fmt.Errorf("Yandex.Metrika API unknown error: %s\nraw content:\n%s", resp.Status, resp.Dump())
+				defer resp.Body.Close()
+				content, _ := io.ReadAll(resp.Body)
+				resp.Err = fmt.Errorf(`Yandex.Metrika API unknown error: %s\nraw content:\n%s`, resp.Status, string(content))
 
 				return nil
 			}
