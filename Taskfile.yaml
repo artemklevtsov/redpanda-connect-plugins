@@ -33,7 +33,7 @@ tasks:
     sources:
       - "**/*.go"
     cmds:
-      - golangci-lint run --verbose
+      - golangci-lint run
 
   go:fmt:
     sources:
