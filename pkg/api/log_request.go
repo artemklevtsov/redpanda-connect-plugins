@@ -4,24 +4,33 @@ import (
 	"context"
 	"io"
 	"strconv"
-	"strings"
+
+	"github.com/google/go-querystring/query"
 )
 
 type LogRequestService struct {
 	client *Client
 }
 
-func (s *LogRequestService) Eval(counter int, query *LogRequestQuery) (*EvalLogRequestResponse, error) {
-	return s.EvalWithContext(context.Background(), counter, query)
+func (s *LogRequestService) Eval(counter int, q *LogRequestQuery) (*EvalLogRequestResponse, error) {
+	return s.EvalWithContext(context.Background(), counter, q)
 }
 
-func (s *LogRequestService) EvalWithContext(ctx context.Context, counter int, query *LogRequestQuery) (*EvalLogRequestResponse, error) {
-	var eval EvalLogRequestResponse
+func (s *LogRequestService) EvalWithContext(ctx context.Context, counter int, q *LogRequestQuery) (*EvalLogRequestResponse, error) {
+	var (
+		err  error
+		eval EvalLogRequestResponse
+	)
 
-	_, err := s.client.R().
+	values, err := query.Values(q)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = s.client.R().
 		SetContext(ctx).
 		SetPathParam("counter_id", strconv.Itoa(counter)).
-		SetQueryParams(query.Params()).
+		SetQueryString(values.Encode()).
 		SetSuccessResult(&eval).
 		Get("counter/{counter_id}/logrequests/evaluate")
 	if err != nil {
@@ -31,17 +40,25 @@ func (s *LogRequestService) EvalWithContext(ctx context.Context, counter int, qu
 	return &eval, nil
 }
 
-func (s *LogRequestService) Create(counter int, query *LogRequestQuery) (*LogRequestResponse, error) {
-	return s.CreateWithContext(context.Background(), counter, query)
+func (s *LogRequestService) Create(counter int, q *LogRequestQuery) (*LogRequestResponse, error) {
+	return s.CreateWithContext(context.Background(), counter, q)
 }
 
-func (s *LogRequestService) CreateWithContext(ctx context.Context, counter int, query *LogRequestQuery) (*LogRequestResponse, error) {
-	var logreq LogRequestResponse
+func (s *LogRequestService) CreateWithContext(ctx context.Context, counter int, q *LogRequestQuery) (*LogRequestResponse, error) {
+	var (
+		err    error
+		logreq LogRequestResponse
+	)
 
-	_, err := s.client.R().
+	values, err := query.Values(q)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = s.client.R().
 		SetContext(ctx).
 		SetPathParam("counter_id", strconv.Itoa(counter)).
-		SetQueryParams(query.Params()).
+		SetQueryString(values.Encode()).
 		SetSuccessResult(&logreq).
 		Post("counter/{counter_id}/logrequests")
 	if err != nil {
@@ -131,11 +148,11 @@ func (s *LogRequestService) DownloadWithContext(ctx context.Context, counter int
 
 // LogRequestQuery represents a query for requesting logs from the Yandex.Metrika API.
 type LogRequestQuery struct {
-	Source      string   `json:"source"`      // Source specifies the source of the logs.
-	Date1       string   `json:"date1"`       // Date1 is the start date for the log request in YYYY-MM-DD format.
-	Date2       string   `json:"date2"`       // Date2 is the end date for the log request in YYYY-MM-DD format.
-	Fields      []string `json:"fields"`      // Fields is a list of fields to include in the log request.
-	Attribution string   `json:"attribution"` // Attribution specifies the attribution model.
+	Source      string   `json:"source" url:"source"`           // Source specifies the source of the logs.
+	Date1       string   `json:"date1" url:"date1"`             // Date1 is the start date for the log request in YYYY-MM-DD format.
+	Date2       string   `json:"date2" url:"date2"`             // Date2 is the end date for the log request in YYYY-MM-DD format.
+	Fields      []string `json:"fields" url:"fields,comma"`     // Fields is a list of fields to include in the log request.
+	Attribution string   `json:"attribution" url:"attribution"` // Attribution specifies the attribution model.
 }
 
 // Map returns a map representation of the LogRequestQuery.
@@ -146,24 +163,6 @@ func (q *LogRequestQuery) Map() map[string]any {
 	m["date2"] = q.Date2
 	m["fields"] = q.Fields
 	m["attribution"] = q.Attribution
-
-	return m
-}
-
-// Params returns a map of query parameters for the LogRequestQuery, suitable for API requests.
-func (q *LogRequestQuery) Params() map[string]string {
-	m := make(map[string]string)
-	m["source"] = q.Source
-	m["date1"] = q.Date1
-	m["date2"] = q.Date2
-	m["fields"] = strings.Join(q.Fields, ",")
-	m["attribution"] = q.Attribution
-
-	for k := range m {
-		if len(m[k]) == 0 {
-			delete(m, k)
-		}
-	}
 
 	return m
 }
