@@ -3,6 +3,7 @@ logger:
 
 input:
   yandex_metrika_goals:
+    token: ${YANDEX_METRIKA_TOKEN:""}
     counter_id: 44147844
 
 pipeline:

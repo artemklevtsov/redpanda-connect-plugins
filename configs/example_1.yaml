@@ -3,6 +3,7 @@ logger:
 
 input:
   yandex_metrika_stat_table:
+    token: ${YANDEX_METRIKA_TOKEN:""}
     ids:
       - 44147844
     metrics:
