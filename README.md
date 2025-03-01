@@ -1,19 +1,19 @@
-# Redpanda Connect for Yandex.Metrika API
+# Redpanda Connect
 
-Redpanda connect plugins to fetch data from the Yandex.Metrika API.
+Redpanda connect with some extensions.
 
 ## Install
 
 Build and Install binary:
 
 ```sh
-go install github.com/artemklevtsov/redpanda-connect-yandex-metrika@latest
+go install github.com/artemklevtsov/redpanda-connect@latest
 ```
 
 Or download binary with:
 
 ```sh
-curl -s https://i.jpillora.com/artemklevtsov/redpanda-connect-yandex-metrika@latest! | bash
+curl -s https://i.jpillora.com/artemklevtsov/redpanda-connect@latest! | bash
 ```
 
 Remove `!` if you want to install to the current directory.
@@ -21,7 +21,7 @@ Remove `!` if you want to install to the current directory.
 Alternatively pull a Docker image with:
 
 ```sh
-docker pull ghcr.io/artemklevtsov/redpanda-connect-yandex-metrika@latest
+docker pull ghcr.io/artemklevtsov/redpanda-connect@latest
 ```
 
 ## Run
@@ -52,7 +52,7 @@ output:
 And you can run it like this:
 
 ```sh
-redpanda-connect-yandex-metrika run ./connect.yaml
+redpanda-connect run ./connect.yaml
 ```
 
 See also `configs/` for the more examples.

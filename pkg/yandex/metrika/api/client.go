@@ -12,7 +12,7 @@ import (
 
 const (
 	// BaseURL is the base URL for Yandex.Metrika API requests.
-	APIBaseURL = "https://api-metrika.yandex.com"
+	APIBaseURL = "https://api-metrika.yandex.ru"
 )
 
 // Client is a wrapper around req.Client for interacting with the Yandex.Metrika API.

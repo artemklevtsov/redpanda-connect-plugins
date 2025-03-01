@@ -1,4 +1,4 @@
-module github.com/artemklevtsov/redpanda-connect-yandex-metrika
+module github.com/artemklevtsov/redpanda-connect
 
 go 1.23.4
 

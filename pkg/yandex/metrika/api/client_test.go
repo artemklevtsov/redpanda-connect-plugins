@@ -22,7 +22,7 @@ func TestNewClient(t *testing.T) {
 		assert.NotNil(t, client.Goal)
 		assert.NotNil(t, client.LogRequest)
 		assert.NotNil(t, client.StatTable)
-		assert.Equal(t, "https://api-metrika.yandex.com/management/v1", client.client.BaseURL)
+		assert.Equal(t, "https://api-metrika.yandex.ru/management/v1", client.client.BaseURL)
 		assert.Equal(t, "Bearer test_token", client.client.Headers.Get("Authorization"))
 	})
 
@@ -35,7 +35,7 @@ func TestNewClient(t *testing.T) {
 		assert.NotNil(t, client.Goal)
 		assert.NotNil(t, client.LogRequest)
 		assert.NotNil(t, client.StatTable)
-		assert.Equal(t, "https://api-metrika.yandex.com/management/v1", client.client.BaseURL)
+		assert.Equal(t, "https://api-metrika.yandex.ru/management/v1", client.client.BaseURL)
 		assert.Equal(t, "Bearer test_token", client.client.Headers.Get("Authorization"))
 	})
 
@@ -48,7 +48,7 @@ func TestNewClient(t *testing.T) {
 		assert.NotNil(t, client.Goal)
 		assert.NotNil(t, client.LogRequest)
 		assert.NotNil(t, client.StatTable)
-		assert.Equal(t, "https://api-metrika.yandex.com/management/v1", client.client.BaseURL)
+		assert.Equal(t, "https://api-metrika.yandex.ru/management/v1", client.client.BaseURL)
 		// Verify that the token is not set in the headers
 		req := client.client.R()
 		assert.Empty(t, req.Headers.Get("Authorization"))
@@ -63,7 +63,7 @@ func TestNewClient(t *testing.T) {
 		assert.NotNil(t, client.Goal)
 		assert.NotNil(t, client.LogRequest)
 		assert.NotNil(t, client.StatTable)
-		assert.Equal(t, "https://api-metrika.yandex.com/stat/v2", client.client.BaseURL)
+		assert.Equal(t, "https://api-metrika.yandex.ru/stat/v2", client.client.BaseURL)
 	})
 }
 

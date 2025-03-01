@@ -25,9 +25,9 @@ import (
 
 	_ "github.com/redpanda-data/connect/v4/public/components/all"
 
-	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/goals"
-	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/logs"
-	_ "github.com/artemklevtsov/redpanda-connect-yandex-metrika/pkg/stat_table"
+	_ "github.com/artemklevtsov/redpanda-connect/pkg/yandex/metrika/goals"
+	_ "github.com/artemklevtsov/redpanda-connect/pkg/yandex/metrika/logs"
+	_ "github.com/artemklevtsov/redpanda-connect/pkg/yandex/metrika/stat_table"
 )
 
 func TestComponentExamples(t *testing.T) {

@@ -1,6 +1,6 @@
 version: 2
 
-project_name: redpanda-connect-yandex-metrika
+project_name: redpanda-connect
 
 before:
   hooks:
@@ -63,7 +63,7 @@ changelog:
 nfpms:
   - license: Apache-2.0
     maintainer: Artem Klevtsov <a.a.klevtsov@gmail.com>
-    homepage: https://github.com/artemklevtsov/redpanda-connect-yandex-metrika
+    homepage: https://github.com/artemklevtsov/redpanda-connect
     description: Redpanda Connect is a declarative data streaming service
     section: utils
     formats:
@@ -86,8 +86,8 @@ dockers:
       - "--label=org.opencontainers.image.title={{ .ProjectName }}"
       - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
       - "--label=org.opencontainers.image.version={{ .Version }}"
-      - "--label=org.opencontainers.image.url=https://github.com/artemklevtsov/redpanda-connect-yandex-metrika"
-      - "--label=org.opencontainers.image.source=https://github.com/artemklevtsov/redpanda-connect-yandex-metrika"
+      - "--label=org.opencontainers.image.url=https://github.com/artemklevtsov/redpanda-connect"
+      - "--label=org.opencontainers.image.source=https://github.com/artemklevtsov/redpanda-connect"
       - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--platform=linux/arm64"
   - image_templates:
@@ -100,8 +100,8 @@ dockers:
       - "--label=org.opencontainers.image.title={{ .ProjectName }}"
       - "--label=org.opencontainers.image.revision={{ .FullCommit }}"
       - "--label=org.opencontainers.image.version={{ .Version }}"
-      - "--label=org.opencontainers.image.url=https://github.com/artemklevtsov/redpanda-connect-yandex-metrika"
-      - "--label=org.opencontainers.image.source=https://github.com/artemklevtsov/redpanda-connect-yandex-metrika"
+      - "--label=org.opencontainers.image.url=https://github.com/artemklevtsov/redpanda-connect"
+      - "--label=org.opencontainers.image.source=https://github.com/artemklevtsov/redpanda-connect"
       - "--label=org.opencontainers.image.created={{ .Date }}"
       - "--platform=linux/amd64"
 
