@@ -35,6 +35,9 @@ func inputConfig() *service.ConfigSpec {
 			service.NewStringListField("sort").
 				Description("A list of dimensions and metrics to use for sorting.").
 				Optional(),
+			service.NewStringField("accuracy").
+				Description("Sample size for the report.").
+				Optional(),
 			service.NewStringField("lang").
 				Description("Language.").
 				Example("en").

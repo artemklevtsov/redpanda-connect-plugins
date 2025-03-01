@@ -47,6 +47,7 @@ type StatTableQuery struct {
 	Dimensions   []string `json:"dimensions,omitempty" url:"dimensions,comma,omitempty"`                     // Dimensions is a list of dimensions for data breakdown.
 	Metrics      []string `json:"metrics,omitempty" url:"metrics,comma,omitempty"`                           // Metrics is a list of metrics to be fetched.
 	Sort         []string `json:"sort,omitempty" url:"sort,comma,omitempty"`                                 // Sort is a list of fields to sort the data by.
+	Accuracy     string   `json:"accuracy,omitempty" url:"accuracy,omitempty"`                               // Accuracy is a sample size for the report.
 	Limit        int      `json:"limit,omitempty" url:"limit,omitempty"`                                     // Limit is the maximum number of rows to return.
 	Offset       int      `json:"offset,omitempty" url:"offset,omitempty"`                                   // Offset is the offset of the first row to return.
 	Filters      string   `json:"filters,omitempty" url:"filters,omitempty"`                                 // Filters is a filter string to apply to the data.
@@ -65,6 +66,7 @@ func (q *StatTableQuery) Map() map[string]any {
 	m["date2"] = q.Date2
 	m["dimensions"] = q.Dimensions
 	m["metrics"] = q.Metrics
+	m["accuracy"] = q.Accuracy
 	m["lang"] = q.Lang
 	m["preset"] = q.Preset
 	m["sort"] = q.Sort

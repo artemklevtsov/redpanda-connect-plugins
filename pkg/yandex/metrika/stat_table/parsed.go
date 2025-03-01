@@ -84,6 +84,13 @@ func inputFromConfig(conf *service.ParsedConfig, mgr *service.Resources) (servic
 		}
 	}
 
+	if conf.Contains("accuracy") {
+		input.query.Accuracy, err = conf.FieldString("accuracy")
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	if conf.Contains("lang") {
 		input.query.Lang, err = conf.FieldString("lang")
 		if err != nil {
