@@ -14,9 +14,8 @@ import (
 )
 
 const (
-	apiKind     = "management"
-	apiVersion  = "v1"
-	apiEndpoint = "counter"
+	apiKind    = "management"
+	apiVersion = "v1"
 )
 
 func init() {
