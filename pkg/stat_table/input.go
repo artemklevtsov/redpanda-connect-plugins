@@ -28,6 +28,7 @@ func init() {
 
 type benthosInput struct {
 	token     string
+	done      bool
 	fetched   int
 	total     int
 	query     *api.StatTableQuery
@@ -61,7 +62,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 	input.clientMut.Lock()
 	defer input.clientMut.Unlock()
 
-	if input.total > 0 && input.fetched >= input.total {
+	if input.done {
 		return nil, nil, service.ErrEndOfInput
 	}
 
@@ -92,6 +93,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 	}
 
 	input.fetched += len(data.Data)
+	input.done = input.total > 0 && input.fetched >= input.total
 
 	msgs, err := data.Batch()
 	if err != nil {
