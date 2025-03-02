@@ -148,23 +148,11 @@ func (s *LogRequestService) DownloadWithContext(ctx context.Context, counter int
 
 // LogRequestQuery represents a query for requesting logs from the Yandex.Metrika API.
 type LogRequestQuery struct {
-	Source      string   `json:"source" url:"source"`           // Source specifies the source of the logs.
-	Date1       string   `json:"date1" url:"date1"`             // Date1 is the start date for the log request in YYYY-MM-DD format.
-	Date2       string   `json:"date2" url:"date2"`             // Date2 is the end date for the log request in YYYY-MM-DD format.
-	Fields      []string `json:"fields" url:"fields,comma"`     // Fields is a list of fields to include in the log request.
-	Attribution string   `json:"attribution" url:"attribution"` // Attribution specifies the attribution model.
-}
-
-// Map returns a map representation of the LogRequestQuery.
-func (q *LogRequestQuery) Map() map[string]any {
-	m := make(map[string]any)
-	m["source"] = q.Source
-	m["date1"] = q.Date1
-	m["date2"] = q.Date2
-	m["fields"] = q.Fields
-	m["attribution"] = q.Attribution
-
-	return m
+	Source      string   `json:"source" url:"source"`                               // Source specifies the source of the logs.
+	Date1       string   `json:"date1" url:"date1"`                                 // Date1 is the start date for the log request in YYYY-MM-DD format.
+	Date2       string   `json:"date2" url:"date2"`                                 // Date2 is the end date for the log request in YYYY-MM-DD format.
+	Fields      []string `json:"fields" url:"fields,comma"`                         // Fields is a list of fields to include in the log request.
+	Attribution string   `json:"attribution,omitempty" url:"attribution,omitempty"` // Attribution specifies the attribution model.
 }
 
 // EvalLogRequestResponse represents the response for evaluating a log request.

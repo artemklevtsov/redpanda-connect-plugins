@@ -216,15 +216,8 @@ func TestStatTableResponse_Batch(t *testing.T) {
 					"metrics":    []string{"ym:s:visits", "ym:s:pageviews"},
 					"dimensions": []string{"ym:s:date"},
 					"limit":      10,
-					"offset":     0,
-					"filters":    "",
 					"date1":      "2023-10-26",
 					"date2":      "2023-10-27",
-					"accuracy":   "",
-					"lang":       "",
-					"preset":     "",
-					"sort":       []string(nil),
-					"timezone":   "",
 				})
 				msg1.MetaSetMut("limit", 10)
 				msg1.MetaSetMut("offset", 0)
@@ -241,15 +234,8 @@ func TestStatTableResponse_Batch(t *testing.T) {
 					"metrics":    []string{"ym:s:visits", "ym:s:pageviews"},
 					"dimensions": []string{"ym:s:date"},
 					"limit":      10,
-					"offset":     0,
-					"filters":    "",
 					"date1":      "2023-10-26",
 					"date2":      "2023-10-27",
-					"accuracy":   "",
-					"lang":       "",
-					"preset":     "",
-					"sort":       []string(nil),
-					"timezone":   "",
 				})
 				msg2.MetaSetMut("limit", 10)
 				msg2.MetaSetMut("offset", 0)

@@ -4,6 +4,7 @@ go 1.23.4
 
 require (
 	github.com/Jeffail/shutdown v1.0.0
+	github.com/go-viper/mapstructure/v2 v2.2.1
 	github.com/google/go-querystring v1.1.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/imroc/req/v3 v3.49.1

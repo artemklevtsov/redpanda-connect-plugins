@@ -3,7 +3,7 @@ package stat_table
 import (
 	"github.com/Jeffail/shutdown"
 	"github.com/artemklevtsov/redpanda-connect/pkg/yandex/metrika/api"
-	"github.com/artemklevtsov/redpanda-connect/pkg/yandex/metrika/misc"
+	"github.com/artemklevtsov/redpanda-connect/pkg/yandex/utils"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 
@@ -66,7 +66,7 @@ func inputFromConfig(conf *service.ParsedConfig, mgr *service.Resources) (servic
 			return nil, err
 		}
 
-		input.query.Date1, err = misc.ParseDate(date1)
+		input.query.Date1, err = utils.ParseDate(date1)
 		if err != nil {
 			return nil, err
 		}
@@ -78,7 +78,7 @@ func inputFromConfig(conf *service.ParsedConfig, mgr *service.Resources) (servic
 			return nil, err
 		}
 
-		input.query.Date2, err = misc.ParseDate(date2)
+		input.query.Date2, err = utils.ParseDate(date2)
 		if err != nil {
 			return nil, err
 		}

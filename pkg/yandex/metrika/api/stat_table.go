@@ -3,7 +3,7 @@ package api
 import (
 	"context"
 
-	"github.com/artemklevtsov/redpanda-connect/pkg/yandex/metrika/misc"
+	"github.com/artemklevtsov/redpanda-connect/pkg/yandex/utils"
 	"github.com/google/go-querystring/query"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
@@ -57,26 +57,6 @@ type StatTableQuery struct {
 	DirectLogins []string `json:"direct_client_logins,omitempty" url:"direct_client_logins,comma,omitempty"` // DirectLogins is a list of direct client logins.
 }
 
-// Map returns a map representation of the StatTableQuery.
-func (q *StatTableQuery) Map() map[string]any {
-	m := make(map[string]any)
-	m["ids"] = q.IDs
-	m["filters"] = q.Filters
-	m["date1"] = q.Date1
-	m["date2"] = q.Date2
-	m["dimensions"] = q.Dimensions
-	m["metrics"] = q.Metrics
-	m["accuracy"] = q.Accuracy
-	m["lang"] = q.Lang
-	m["preset"] = q.Preset
-	m["sort"] = q.Sort
-	m["timezone"] = q.Timezone
-	m["limit"] = q.Limit
-	m["offset"] = q.Offset
-
-	return m
-}
-
 // StatTableResponse represents the response from a stat table query.
 type StatTableResponse struct {
 	Query     *StatTableQuery          `json:"query"`      // Query contains the query parameters used to fetch this data.
@@ -106,19 +86,24 @@ func (r *StatTableResponse) Batch() (service.MessageBatch, error) {
 
 		for di, d := range e.Dimensions {
 			k := r.Query.Dimensions[di]
-			k = misc.ProcessKey(k)
+			k = utils.ProcessKey(k)
 			row[k] = d.Name
 		}
 
 		for mi, m := range e.Metrics {
 			k := r.Query.Metrics[mi]
-			k = misc.ProcessKey(k)
+			k = utils.ProcessKey(k)
 			row[k] = m
+		}
+
+		query, err := utils.StructToMap(r.Query)
+		if err != nil {
+			return nil, err
 		}
 
 		msg := service.NewMessage(nil)
 		msg.SetStructuredMut(row)
-		msg.MetaSetMut("query", r.Query.Map())
+		msg.MetaSetMut("query", query)
 		msg.MetaSetMut("limit", r.Query.Limit)
 		msg.MetaSetMut("offset", r.Query.Offset)
 		msg.MetaSetMut("total", r.TotalRows)

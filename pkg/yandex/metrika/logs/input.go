@@ -9,7 +9,7 @@ import (
 
 	"github.com/Jeffail/shutdown"
 	"github.com/artemklevtsov/redpanda-connect/pkg/yandex/metrika/api"
-	"github.com/artemklevtsov/redpanda-connect/pkg/yandex/metrika/misc"
+	"github.com/artemklevtsov/redpanda-connect/pkg/yandex/utils"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 
@@ -158,6 +158,11 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 			With("part", input.part).
 			Debug("fetch log request")
 
+		query, err := utils.StructToMap(input.request.LogRequestQuery)
+		if err != nil {
+			return nil, nil, service.ErrEndOfInput
+		}
+
 		httpReader, err := input.client.LogRequest.DownloadWithContext(ctx, input.counter, input.request.RequestID, input.part)
 		if err != nil {
 			return nil, nil, service.ErrEndOfInput
@@ -189,8 +194,8 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 			row := make(map[string]any)
 
 			for i, key := range csvHeader {
-				key = misc.ProcessKey(key)
-				value := misc.ProcessValue(csvHeader[i], csvRow[i])
+				key = utils.ProcessKey(key)
+				value := utils.ProcessValue(csvHeader[i], csvRow[i])
 				row[key] = value
 			}
 
@@ -201,7 +206,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 			msg.MetaSetMut("total_parts", len(input.request.Parts))
 			msg.MetaSetMut("current_part", input.part+1)
 			msg.MetaSetMut("current_row", rowNumber)
-			msg.MetaSetMut("query", input.query.Map())
+			msg.MetaSetMut("query", query)
 
 			msgs = append(msgs, msg)
 
