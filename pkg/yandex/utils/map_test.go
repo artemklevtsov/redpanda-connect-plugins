@@ -60,8 +60,8 @@ func TestStructToMap(t *testing.T) {
 		{
 			name: "Struct with embedded struct",
 			input: struct {
-				EmbeddedStruct `json:",squash"`
-				Other          string `json:"other"`
+				EmbeddedStruct
+				Other string `json:"other"`
 			}{
 				EmbeddedStruct: EmbeddedStruct{
 					EmbeddedName: "embedded",
