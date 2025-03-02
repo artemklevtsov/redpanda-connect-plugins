@@ -1,6 +1,11 @@
 # Redpanda Connect
 
-Redpanda connect with some extensions.
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/artemklevtsov/redpanda-connect/tests.yml?branch=main)](https://github.com/artemklevtsov/redpanda-connect/actions?query=branch%3Amain)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/artemklevtsov/redpanda-connect)
+[![GitHub Release](https://img.shields.io/github/v/release/artemklevtsov/redpanda-connect)](https://github.com/artemklevtsov/redpanda-connect/releases/latest)
+[![GitHub License](https://img.shields.io/github/license/artemklevtsov/redpanda-connect)](https://github.com/artemklevtsov/redpanda-connect?tab=Apache-2.0-1-ov-file#readme)
+
+Redpanda Connect with some extensions.
 
 ## Install
 
@@ -61,18 +66,25 @@ See also `configs/` for the more examples.
 
 ### Documentation
 
+#### Redpadna Connect
+
 - [plugin docs](docs/modules/components/pages/)
 - [redpanda connect docs](https://docs.redpanda.com/redpanda-connect/)
 
-### Authorization
+#### Yandex.Metrika API
+
+##### Authorization
+
+1. [Create app](https://oauth.yandex.ru/client/new/id)
+2. Get token: <https://oauth.yandex.ru/authorize?response_type=token&client_id={APP_ID}>
 
 - [debug token](https://yandex.ru/dev/id/doc/en/tokens/debug-token)
 
-### Reporting API
+##### Reporting API
 
 - [dimensions and metrics](https://yandex.ru/dev/metrika/en/stat/attrandmetr/dim_all)
 
-### Logs API
+##### Logs API
 
 - [hits](https://yandex.ru/dev/metrika/en/logs/fields/hits)
 - [visits](https://yandex.ru/dev/metrika/en/logs/fields/visits)
