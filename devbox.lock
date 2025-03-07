@@ -2,7 +2,7 @@
   "lockfile_version": "1",
   "packages": {
     "github:NixOS/nixpkgs/nixpkgs-unstable": {
-      "resolved": "github:NixOS/nixpkgs/3a05eebede89661660945da1f151959900903b6a?lastModified=1740547748&narHash=sha256-Ly2fBL1LscV%2BKyCqPRufUBuiw%2BzmWrlJzpWOWbahplg%3D"
+      "resolved": "github:NixOS/nixpkgs/02032da4af073d0f6110540c8677f16d4be0117f?lastModified=1741037377&narHash=sha256-SvtvVKHaUX4Owb%2BPasySwZsoc5VUeTf1px34BByiOxw%3D"
     },
     "glibcLocales@latest": {
       "last_modified": "2025-02-07T11:26:36Z",
@@ -254,11 +254,11 @@
           "outputs": [
             {
               "name": "out",
-              "path": "/nix/store/d329jkjg0dgzi5qzn3xwa5yi6x7z8nm4-goreleaser-2.7.0",
+              "path": "/nix/store/hpb3rvn4y1sblrcnb636hyr7vksc64a5-goreleaser-2.7.0",
               "default": true
             }
           ],
-          "store_path": "/nix/store/d329jkjg0dgzi5qzn3xwa5yi6x7z8nm4-goreleaser-2.7.0"
+          "store_path": "/nix/store/hpb3rvn4y1sblrcnb636hyr7vksc64a5-goreleaser-2.7.0"
         },
         "x86_64-linux": {
           "outputs": [
