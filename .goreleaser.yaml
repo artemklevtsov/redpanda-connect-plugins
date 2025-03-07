@@ -59,6 +59,9 @@ changelog:
       - "^docs:"
       - "^test:"
       - "^ci:"
+      - "^feat(ci):"
+      - "^feat(devbox):"
+      - "^feat(docs):"
 
 nfpms:
   - license: Apache-2.0
