@@ -33,8 +33,8 @@ import (
 	_ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/metrika/logs"
 	_ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/metrika/stat_table"
 
-	// _ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/appmetrika/apps"
-	// _ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/appmetrika/stat_table"
+	_ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/appmetrika/apps"
+	_ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/appmetrika/stat_table"
 
 	_ "embed"
 )

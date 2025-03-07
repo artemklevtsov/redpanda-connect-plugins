@@ -1,4 +1,4 @@
-= yandex_metrika_stat_table
+= yandex_appmetrika_stat_table
 :type: input
 :status: beta
 :categories: ["api","http","yandex"]
@@ -29,7 +29,7 @@ Creates an input that fetch Yandex.Metrika API report data.
 # Config fields, showing default values
 input:
   label: ""
-  yandex_metrika_stat_table:
+  yandex_appmetrika_stat_table:
     token: "" # No default (optional)
     ids: [] # No default (required)
     metrics: [] # No default (required)
@@ -49,7 +49,7 @@ input:
 
 === `token`
 
-Yandex.Metrika API token
+Yandex.AppMetrika API token
 [CAUTION]
 ====
 This field contains sensitive information that usually shouldn't be added to a config directly, read our xref:configuration:secrets.adoc[secrets page for more info].
@@ -62,7 +62,7 @@ This field contains sensitive information that usually shouldn't be added to a c
 
 === `ids`
 
-Yandex.Metrika Counter IDs
+Yandex.AppMetrika Counter IDs
 
 
 *Type*: `array`

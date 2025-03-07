@@ -1,0 +1,27 @@
+logger:
+  level: trace
+
+input:
+  yandex_appmetrika_stat_table:
+    token: ${YANDEX_APPMETRIKA_TOKEN:""}
+    ids:
+      - 1111
+    metrics:
+      - ym:i:installDevices
+    dimensions:
+      - ym:i:date
+    sort:
+      - ym:i:date
+    date1: 2025-02-01
+    date2: 2025-02-28
+    # filters: ym:s:lastTrafficSource=='direct'
+    # filters: ym:s:date=='2025-02-03'
+
+pipeline:
+  processors:
+    - mutation: |
+        #!blobl
+        root.fetched_at = now()
+
+output:
+  stdout: {}
