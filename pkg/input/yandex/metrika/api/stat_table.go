@@ -3,7 +3,7 @@ package api
 import (
 	"context"
 
-	"github.com/artemklevtsov/redpanda-connect/pkg/yandex/utils"
+	"github.com/artemklevtsov/redpanda-connect/internal/pkg/utils"
 	"github.com/google/go-querystring/query"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
