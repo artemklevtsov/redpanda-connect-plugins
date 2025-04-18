@@ -1,22 +1,22 @@
+version: "2"
 run:
-  timeout: 30m
   allow-parallel-runners: true
 linters:
   enable:
     - asciicheck
+    - bidichk
     - bodyclose
-    - misspell
-    - wsl
+    - contextcheck
+    - copyloopvar
     - errname
     - errorlint
-    - copyloopvar
+    - forcetypeassert
     - gosec
-    - nilnil
+    - loggercheck
+    - misspell
+    - musttag
     - nilerr
-    - bidichk
-    - contextcheck
-    - gofumpt
-    - goimports
+    - nilnil
     - noctx
     - nolintlint
     - prealloc
@@ -25,10 +25,27 @@ linters:
     - unparam
     - usestdlibvars
     - wastedassign
-    - forcetypeassert
-    - musttag
-    - loggercheck
-
-issues:
-  exclude-dirs:
-    - cmd/docs-gen
+    - wsl
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - cmd/docs-gen
+      - third_party$
+      - builtin$
+      - examples$
+formatters:
+  enable:
+    - gofumpt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - cmd/docs-gen
+      - third_party$
+      - builtin$
+      - examples$
