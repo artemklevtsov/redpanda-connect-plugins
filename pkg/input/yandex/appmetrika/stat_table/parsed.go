@@ -2,8 +2,8 @@ package stat_table
 
 import (
 	"github.com/Jeffail/shutdown"
-	"github.com/artemklevtsov/redpanda-connect/internal/pkg/utils"
-	"github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/appmetrika/api"
+	"github.com/artemklevtsov/redpanda-connect-plugins/internal/pkg/utils"
+	"github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/appmetrika/api"
 	"github.com/redpanda-data/benthos/v4/public/service"
 )
 

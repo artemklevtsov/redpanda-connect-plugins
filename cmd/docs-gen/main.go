@@ -29,12 +29,12 @@ import (
 
 	"github.com/redpanda-data/connect/v4/public/schema"
 
-	_ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/metrika/goals"
-	_ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/metrika/logs"
-	_ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/metrika/stat_table"
+	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/metrika/goals"
+	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/metrika/logs"
+	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/metrika/stat_table"
 
-	_ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/appmetrika/apps"
-	_ "github.com/artemklevtsov/redpanda-connect/pkg/input/yandex/appmetrika/stat_table"
+	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/appmetrika/apps"
+	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/appmetrika/stat_table"
 
 	_ "embed"
 )

@@ -1,9 +1,9 @@
 # Redpanda Connect
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/artemklevtsov/redpanda-connect/tests.yml?branch=main)](https://github.com/artemklevtsov/redpanda-connect/actions?query=branch%3Amain)
-![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/artemklevtsov/redpanda-connect)
-[![GitHub Release](https://img.shields.io/github/v/release/artemklevtsov/redpanda-connect)](https://github.com/artemklevtsov/redpanda-connect/releases/latest)
-[![GitHub License](https://img.shields.io/github/license/artemklevtsov/redpanda-connect)](https://github.com/artemklevtsov/redpanda-connect?tab=Apache-2.0-1-ov-file#readme)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/artemklevtsov/redpanda-connect-plugins/tests.yml?branch=main)](https://github.com/artemklevtsov/redpanda-connect-plugins/actions?query=branch%3Amain)
+![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/artemklevtsov/redpanda-connect-plugins)
+[![GitHub Release](https://img.shields.io/github/v/release/artemklevtsov/redpanda-connect-plugins)](https://github.com/artemklevtsov/redpanda-connect-plugins/releases/latest)
+[![GitHub License](https://img.shields.io/github/license/artemklevtsov/redpanda-connect-plugins)](https://github.com/artemklevtsov/redpanda-connect-plugins?tab=Apache-2.0-1-ov-file#readme)
 
 Redpanda Connect with some extensions.
 
@@ -12,13 +12,14 @@ Redpanda Connect with some extensions.
 Build and Install binary:
 
 ```sh
-go install github.com/artemklevtsov/redpanda-connect@latest
+go install github.com/artemklevtsov/redpanda-connect-plugins@latest
+mv $HOME/go/bin/redpanda-connect-plugins $HOME/go/bin/redpanda-connect
 ```
 
 Or download binary with:
 
 ```sh
-curl -s https://i.jpillora.com/artemklevtsov/redpanda-connect@latest! | bash
+curl -s https://i.jpillora.com/artemklevtsov/redpanda-connect-plugins@latest!?as=redpanda-connect | bash
 ```
 
 Remove `!` if you want to install to the current directory.
@@ -26,7 +27,7 @@ Remove `!` if you want to install to the current directory.
 Alternatively pull a Docker image with:
 
 ```sh
-docker pull ghcr.io/artemklevtsov/redpanda-connect@latest
+docker pull ghcr.io/artemklevtsov/redpanda-connect-plugins@latest
 ```
 
 ## Run

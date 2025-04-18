@@ -3,7 +3,7 @@ version: "3"
 vars:
   MODNAME:
     sh: go list -m
-  APPNAME: "{{.MODNAME | base}}"
+  APPNAME: redpadna-connect
   VERSION:
     sh: git describe --tags --always
   REVISION:
