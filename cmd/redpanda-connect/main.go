@@ -4,8 +4,12 @@ import (
 	"context"
 
 	"github.com/redpanda-data/benthos/v4/public/service"
+	"github.com/redpanda-data/connect/v4/public/license"
 
-	_ "github.com/redpanda-data/connect/public/bundle/free/v4"
+	// _ "github.com/redpanda-data/connect/public/bundle/free/v4"
+
+	// Import full suite of FOSS and Enterprise connect components
+	_ "github.com/redpanda-data/connect/public/bundle/enterprise/v4"
 
 	// _ "github.com/redpanda-data/connect/v4/public/components/io"
 	// _ "github.com/redpanda-data/connect/v4/public/components/pure"
@@ -27,6 +31,10 @@ var (
 func main() {
 	service.RunCLI(
 		context.Background(),
+		service.CLIOptOnConfigParse(func(pConf *service.ParsedConfig) error {
+			license.LocateLicense(pConf.Resources())
+			return nil
+		}),
 		service.CLIOptSetVersion(Version, DateBuilt),
 		service.CLIOptSetDefaultConfigPaths(
 			"benthos.yaml",

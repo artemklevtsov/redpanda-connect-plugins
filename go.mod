@@ -10,7 +10,7 @@ require (
 	github.com/iancoleman/strcase v0.3.0
 	github.com/imroc/req/v3 v3.50.0
 	github.com/redpanda-data/benthos/v4 v4.47.0
-	github.com/redpanda-data/connect/public/bundle/free/v4 v4.49.1
+	github.com/redpanda-data/connect/public/bundle/enterprise/v4 v4.49.1
 	github.com/redpanda-data/connect/v4 v4.52.0
 	github.com/stretchr/testify v1.10.0
 	go.opentelemetry.io/otel v1.35.0
@@ -33,7 +33,7 @@ require (
 	cloud.google.com/go/spanner v1.79.0 // indirect
 	cloud.google.com/go/storage v1.51.0 // indirect
 	cloud.google.com/go/trace v1.11.6 // indirect
-	cloud.google.com/go/vertexai v0.12.0 // indirect
+	cloud.google.com/go/vertexai v0.13.2 // indirect
 	cuelang.org/go v0.12.1 // indirect
 	dario.cat/mergo v1.0.1 // indirect
 	filippo.io/edwards25519 v1.1.0 // indirect
@@ -79,6 +79,7 @@ require (
 	github.com/apache/thrift v0.21.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/ardielle/ardielle-go v1.5.2 // indirect
+	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/auth0/go-jwt-middleware/v2 v2.3.0 // indirect
 	github.com/authzed/authzed-go v1.4.0 // indirect
 	github.com/authzed/grpcutil v0.0.0-20250221190651-1985b19b35b8 // indirect
@@ -95,7 +96,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.34 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.3 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.3.34 // indirect
-	github.com/aws/aws-sdk-go-v2/service/bedrockruntime v1.15.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/bedrockruntime v1.23.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/cloudwatch v1.44.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.42.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.25.3 // indirect
@@ -137,7 +138,7 @@ require (
 	github.com/cloudflare/circl v1.6.1 // indirect
 	github.com/cncf/xds/go v0.0.0-20250326154945-ae57f3c0d45f // indirect
 	github.com/cockroachdb/apd/v3 v3.2.1 // indirect
-	github.com/cohere-ai/cohere-go/v2 v2.11.0 // indirect
+	github.com/cohere-ai/cohere-go/v2 v2.12.2 // indirect
 	github.com/colinmarc/hdfs v1.1.3 // indirect
 	github.com/couchbase/gocb/v2 v2.10.0 // indirect
 	github.com/couchbase/gocbcore/v10 v10.7.0 // indirect
@@ -328,7 +329,7 @@ require (
 	github.com/samber/lo v1.49.1 // indirect
 	github.com/sashabaranov/go-openai v1.37.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
-	github.com/segmentio/encoding v0.4.0 // indirect
+	github.com/segmentio/encoding v0.4.1 // indirect
 	github.com/segmentio/ksuid v1.0.4 // indirect
 	github.com/sergi/go-diff v1.3.2-0.20230802210424-5b0b94c5c0d3 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
