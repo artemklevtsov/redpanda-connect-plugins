@@ -13,7 +13,7 @@ Build and Install binary:
 
 ```sh
 go install github.com/artemklevtsov/redpanda-connect-plugins@latest
-mv $HOME/go/bin/redpanda-connect-plugins $HOME/go/bin/redpanda-connect
+ln -sf $HOME/go/bin/redpanda-connect-plugins $HOME/go/bin/redpanda-connect
 ```
 
 Or download binary with:
@@ -27,7 +27,7 @@ Remove `!` if you want to install to the current directory.
 Alternatively pull a Docker image with:
 
 ```sh
-docker pull ghcr.io/artemklevtsov/redpanda-connect-plugins@latest
+docker pull ghcr.io/artemklevtsov/redpanda-connect@latest
 ```
 
 ## Run
