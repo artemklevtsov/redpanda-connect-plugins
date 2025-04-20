@@ -5,6 +5,7 @@ go 1.24.1
 require (
 	github.com/Jeffail/shutdown v1.0.0
 	github.com/go-viper/mapstructure/v2 v2.2.1
+	github.com/gofrs/uuid/v5 v5.3.2
 	github.com/google/go-querystring v1.1.0
 	github.com/iancoleman/strcase v0.3.0
 	github.com/imroc/req/v3 v3.50.0
@@ -187,7 +188,6 @@ require (
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/gocql/gocql v1.7.0 // indirect
 	github.com/godbus/dbus v0.0.0-20190726142602-4481cbc300e2 // indirect
-	github.com/gofrs/uuid/v5 v5.3.2 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect

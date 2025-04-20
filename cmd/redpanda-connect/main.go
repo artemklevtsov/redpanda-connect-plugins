@@ -12,6 +12,7 @@ import (
 	// _ "github.com/redpanda-data/connect/v4/public/components/pure/extended"
 	// _ "github.com/redpanda-data/connect/v4/public/components/sql"
 
+	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/bloblang"
 	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/appmetrika"
 	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/metrika"
 )
