@@ -8,6 +8,8 @@ import (
 )
 
 func init() {
+	method := "uuid_v5"
+
 	spec := bloblang.NewPluginSpec().
 		Description(`Retruns UUID version 5 for the given string. Available predefined namespaces: `+"`dns`, `url`, `oid`, `x500`"+`.`).
 		Example("", `root.id = "example".uuid_v5()`, [2]string{`example`, `{"id": "feb54431-301b-52bb-a6dd-e1e93e81bb9e"}`}).
@@ -20,6 +22,10 @@ func init() {
 		}
 
 		return func(v any) (any, error) {
+			if v == nil {
+				return nil, nil
+			}
+
 			var uns uuid.UUID
 			if ns == nil {
 				uns = uuid.Nil
@@ -36,7 +42,7 @@ func init() {
 				default:
 					uns, err = uuid.FromString(*ns)
 					if err != nil {
-						return nil, fmt.Errorf("invalid ns uuid: %q", *ns)
+						return nil, fmt.Errorf("invalid ns param for the %s: %q", method, *ns)
 					}
 				}
 			}
@@ -48,11 +54,11 @@ func init() {
 				return uuid.NewV5(uns, string(t)).String(), nil
 			}
 
-			return nil, fmt.Errorf("invalid type: %T", v)
+			return nil, fmt.Errorf("invalid input type for the %s: %T", method, v)
 		}, nil
 	}
 
-	err := bloblang.RegisterMethodV2("uuid_v5", spec, ctor)
+	err := bloblang.RegisterMethodV2(method, spec, ctor)
 	if err != nil {
 		panic(err)
 	}
