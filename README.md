@@ -67,7 +67,7 @@ See also `configs/` for the more examples.
 
 ### Documentation
 
-#### Redpadna Connect
+#### redpanda Connect
 
 - [plugin docs](docs/modules/components/pages/)
 - [redpanda connect docs](https://docs.redpanda.com/redpanda-connect/)
