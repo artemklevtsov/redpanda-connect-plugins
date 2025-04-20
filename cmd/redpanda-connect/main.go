@@ -12,12 +12,8 @@ import (
 	// _ "github.com/redpanda-data/connect/v4/public/components/pure/extended"
 	// _ "github.com/redpanda-data/connect/v4/public/components/sql"
 
-	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/metrika/goals"
-	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/metrika/logs"
-	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/metrika/stat_table"
-
-	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/appmetrika/apps"
-	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/appmetrika/stat_table"
+	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/appmetrika"
+	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/metrika"
 )
 
 var (
