@@ -17,18 +17,18 @@ jobs:
     steps:
       - name: Cleanup CI runner
         run: |
-          rm -rf ${AGENT_TOOLSDIRECTORY}
-          rm -rf /opt/ghc
-          rm -rf /opt/google/chrome
-          rm -rf /opt/microsoft/msedge
-          rm -rf /opt/microsoft/powershell
-          rm -rf /usr/share/dotnet
-          rm -rf /usr/share/swift
-          rm -rf /usr/local/share/boost
-          # rm -rf /usr/local/share/chromium
-          rm -rf /usr/local/share/powershell
-          rm -rf /usr/local/lib/android
-          rm -rf /usr/local/lib/node_modules
+          sudo rm -rf ${AGENT_TOOLSDIRECTORY}
+          sudo rm -rf /opt/ghc
+          sudo rm -rf /opt/google/chrome
+          sudo rm -rf /opt/microsoft/msedge
+          sudo rm -rf /opt/microsoft/powershell
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/share/swift
+          sudo rm -rf /usr/local/share/boost
+          sudo rm -rf /usr/local/share/chromium
+          sudo rm -rf /usr/local/share/powershell
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /usr/local/lib/node_modules
           docker rmi $(docker image ls -aq) || true
           docker image prune --all --force
       - name: Checkout
