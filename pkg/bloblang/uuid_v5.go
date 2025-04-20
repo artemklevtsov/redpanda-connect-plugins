@@ -23,6 +23,7 @@ func init() {
 
 		return func(v any) (any, error) {
 			if v == nil {
+				//nolint: nilnil
 				return nil, nil
 			}
 
