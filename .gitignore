@@ -2,4 +2,4 @@
 .devbox/
 dist/
 .env
-redpanda-connect
+/redpanda-connect
