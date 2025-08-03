@@ -722,6 +722,7 @@ func TestLogRequestService_DownloadWithContext(t *testing.T) {
 
 				if body != nil {
 					defer body.Close()
+
 					content, _ := io.ReadAll(body)
 					assert.Equal(t, tc.expectedData, string(content))
 				} else {

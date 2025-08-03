@@ -69,6 +69,7 @@ func NewClient(kind, version, token string, logger *service.Logger) *Client {
 			if !resp.IsSuccessState() {
 				// Neither a success response nor a error response, record details to help troubleshooting
 				defer resp.Body.Close()
+
 				content, _ := io.ReadAll(resp.Body)
 				resp.Err = fmt.Errorf(`Yandex.Metrika API unknown error: %s\nraw content:\n%s`, resp.Status, string(content))
 

@@ -78,6 +78,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 	if data == nil {
 		input.logger.
 			Warn("response return no data")
+
 		return nil, nil, service.ErrEndOfInput
 	}
 

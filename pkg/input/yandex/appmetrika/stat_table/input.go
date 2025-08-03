@@ -17,7 +17,8 @@ const (
 
 func init() {
 	err := service.RegisterBatchInput(
-		"yandex_appmetrika_stat_table", inputConfig(),
+		"yandex_appmetrika_stat_table",
+		inputConfig(),
 		func(conf *service.ParsedConfig, mgr *service.Resources) (service.BatchInput, error) {
 			return inputFromConfig(conf, mgr)
 		})
@@ -78,6 +79,7 @@ func (input *benthosInput) ReadBatch(ctx context.Context) (service.MessageBatch,
 	if data == nil {
 		input.logger.
 			Warn("response return no data")
+
 		return nil, nil, service.ErrEndOfInput
 	}
 
