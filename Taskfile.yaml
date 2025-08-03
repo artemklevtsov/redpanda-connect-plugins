@@ -32,6 +32,8 @@ tasks:
   go:lint:
     sources:
       - "**/*.go"
+    deps:
+      - go:tidy
     cmds:
       - golangci-lint run
 

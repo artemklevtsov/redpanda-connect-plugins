@@ -16,7 +16,7 @@ import (
 	// _ "github.com/redpanda-data/connect/v4/public/components/pure/extended"
 	// _ "github.com/redpanda-data/connect/v4/public/components/sql"
 
-	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/bloblang"
+	// _ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/bloblang"
 	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/appmetrika"
 	_ "github.com/artemklevtsov/redpanda-connect-plugins/pkg/input/yandex/metrika"
 )
@@ -31,8 +31,8 @@ var (
 func main() {
 	service.RunCLI(
 		context.Background(),
-		service.CLIOptOnConfigParse(func(pConf *service.ParsedConfig) error {
-			license.LocateLicense(pConf.Resources())
+		service.CLIOptOnConfigParse(func(conf *service.ParsedConfig) error {
+			license.LocateLicense(conf.Resources())
 			return nil
 		}),
 		service.CLIOptSetVersion(Version, DateBuilt),
